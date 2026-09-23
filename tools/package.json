@@ -1,0 +1,17 @@
+{
+  "name": "infinitode4-tools",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Asset generators and tests for INFINITODE 4",
+  "scripts": {
+    "assets": "node gen-assets.mjs",
+    "music": "node gen-music.mjs",
+    "test": "node test-sim.mjs && node test-ui.mjs"
+  },
+  "devDependencies": {
+    "jsdom": "^24.1.0",
+    "pngjs": "^7.0.0",
+    "sharp": "^0.33.5"
+  }
+}

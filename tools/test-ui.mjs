@@ -3,7 +3,7 @@ import { createRequire } from 'module';
 import { readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-const require = createRequire('/tmp/npmtest/package.json');
+const require = createRequire(import.meta.url);
 const { JSDOM } = require('jsdom');
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
