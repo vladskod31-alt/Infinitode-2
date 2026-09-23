@@ -10,7 +10,7 @@
         android:theme="@style/Theme.Infinitode4"
         android:hardwareAccelerated="true"
         android:supportsRtl="true"
-        android:allowBackup="true"
+        android:allowBackup="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"
