@@ -46,10 +46,14 @@ jobs:
           gradle-version: 8.10
 
       - name: Assemble debug APK
-        run: gradle :app:assembleDebug --project-dir android --no-daemon --console=plain
+        run: |
+          set -o pipefail
+          gradle :app:assembleDebug --project-dir android --no-daemon --console=plain --stacktrace 2>&1 | tee /tmp/gradle-debug.log
 
       - name: Assemble release APK (signed)
-        run: gradle :app:assembleRelease --project-dir android --no-daemon --console=plain
+        run: |
+          set -o pipefail
+          gradle :app:assembleRelease --project-dir android --no-daemon --console=plain --stacktrace 2>&1 | tee /tmp/gradle-release.log
 
       - name: Collect APKs
         run: |
