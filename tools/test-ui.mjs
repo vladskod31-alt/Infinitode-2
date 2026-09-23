@@ -7,6 +7,9 @@ const require = createRequire(import.meta.url);
 const { JSDOM } = require('jsdom');
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+const GAME = process.env.GAME_DIR || 'game';
+const V5 = GAME === 'game5';
+console.log('Testing dir:', GAME);
 let fails = 0;
 const ok = (c, m) => { console.log((c ? 'PASS' : 'FAIL') + ' ' + m); if (!c) fails++; };
 
@@ -23,9 +26,9 @@ function ctx2d() {
   });
 }
 
-const html = readFileSync(join(root, 'game/index.html'), 'utf8');
+const html = readFileSync(join(root, GAME, 'index.html'), 'utf8');
 const dom = new JSDOM(html, {
-  url: 'http://localhost/game/index.html',
+  url: 'http://localhost/' + GAME + '/index.html',
   runScripts: 'outside-only',
   pretendToBeVisual: true,
 });
@@ -39,7 +42,7 @@ window.cancelAnimationFrame = () => { rafCb = null; };
 
 // load game scripts in order
 for (const f of ['balance.js', 'storage.js', 'audio.js', 'engine.js', 'render.js', 'ui.js']) {
-  const code = readFileSync(join(root, 'game/js', f), 'utf8');
+  const code = readFileSync(join(root, GAME, 'js', f), 'utf8');
   try { window.eval(code); }
   catch (e) { ok(false, `eval ${f}: ${e.message}`); }
 }
@@ -55,13 +58,13 @@ ok(!window.document.getElementById('scr-menu').classList.contains('hidden'), 'me
 // navigate: play -> maps
 window.document.getElementById('btn-play').click();
 ok(!window.document.getElementById('scr-maps').classList.contains('hidden'), 'maps screen opens');
-ok(window.document.querySelectorAll('.map-card').length === 3, '3 map cards rendered');
+ok(window.document.querySelectorAll('.map-card').length === window.BAL.MAPS.length, `${window.BAL.MAPS.length} map cards rendered`);
 
 // start game on first map
 window.document.querySelector('.map-card').click();
 ok(!!UI.game, 'game instance created');
 ok(!window.document.getElementById('scr-game').classList.contains('hidden'), 'game screen opens');
-ok(window.document.querySelectorAll('.build-btn').length === 18, '18 build buttons rendered');
+ok(window.document.querySelectorAll('.build-btn').length === Object.keys(window.BAL.TOWERS).length, `${Object.keys(window.BAL.TOWERS).length} build buttons rendered`);
 
 // place towers via engine + run frames
 const g = UI.game;
@@ -116,14 +119,14 @@ ok(!g.over && g.endless, 'continue endless works');
 // back to menu, profile/research/settings/help render
 window.document.getElementById('m-menu') && window.document.getElementById('m-menu').click();
 UI.renderProfile();
-ok(window.document.getElementById('pf-stats').children.length === 9, 'profile stats rendered');
+ok(window.document.getElementById('pf-stats').children.length === (V5 ? 11 : 9), 'profile stats rendered');
 ok(window.document.getElementById('pf-ach').children.length === window.BAL.ACH.length, 'achievements rendered');
 UI.renderResearch();
 ok(window.document.querySelectorAll('.res-row').length === window.BAL.RESEARCH.length, 'research rows rendered');
 UI.renderSettings();
 UI.renderHelp();
-ok(window.document.querySelectorAll('#help-towers .enc-row').length === 18, 'tower encyclopedia (18)');
-ok(window.document.querySelectorAll('#help-enemies .enc-row').length === 12, 'enemy encyclopedia (12)');
+ok(window.document.querySelectorAll('#help-towers .enc-row').length === Object.keys(window.BAL.TOWERS).length, 'tower encyclopedia');
+ok(window.document.querySelectorAll('#help-enemies .enc-row').length === Object.keys(window.BAL.ENEMIES).length, 'enemy encyclopedia');
 // language switch
 window.STORE.S.settings.lang = 'en'; UI.applyI18n();
 ok(window.document.querySelector('[data-i18n="play"]').textContent === 'PLAY', 'EN translation applies');

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#070b18">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>INFINITODE 5 — Tower Defense</title>
+<link rel="icon" href="assets/img/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/img/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ================= SVG SPRITE ================= -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<!-- TOWERS -->
+<symbol id="i-basic" viewBox="0 0 48 48"><circle cx="24" cy="28" r="11" fill="none" stroke="currentColor" stroke-width="3"/><path d="M24 28V8M20 8h8" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><circle cx="24" cy="28" r="4" fill="currentColor"/></symbol>
+<symbol id="i-cannon" viewBox="0 0 48 48"><circle cx="22" cy="29" r="12" fill="none" stroke="currentColor" stroke-width="3"/><path d="M22 29L38 12" stroke="currentColor" stroke-width="8" stroke-linecap="round"/><circle cx="38" cy="12" r="3" fill="currentColor"/></symbol>
+<symbol id="i-multishot" viewBox="0 0 48 48"><circle cx="24" cy="30" r="9" fill="none" stroke="currentColor" stroke-width="3"/><path d="M24 30L10 12M24 30V8M24 30l14-18" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></symbol>
+<symbol id="i-sniper" viewBox="0 0 48 48"><circle cx="18" cy="30" r="9" fill="none" stroke="currentColor" stroke-width="3"/><path d="M24 24L42 8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="36" cy="14" r="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M36 6v16M28 14h16" stroke="currentColor" stroke-width="1.5"/></symbol>
+<symbol id="i-freezing" viewBox="0 0 48 48"><path d="M24 6v36M8 15l32 18M40 15L8 33" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="24" cy="24" r="6" fill="none" stroke="currentColor" stroke-width="3"/></symbol>
+<symbol id="i-antiair" viewBox="0 0 48 48"><path d="M8 38L24 8l16 30" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M24 8v10M17 24h14" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="24" cy="32" r="4" fill="currentColor"/></symbol>
+<symbol id="i-splash" viewBox="0 0 48 48"><circle cx="24" cy="24" r="6" fill="currentColor"/><g stroke="currentColor" stroke-width="4" stroke-linecap="round"><path d="M24 4v8M24 36v8M4 24h8M36 24h8M10 10l6 6M32 32l6 6M38 10l-6 6M16 32l-6 6"/></g></symbol>
+<symbol id="i-blast" viewBox="0 0 48 48"><path d="M24 4l4 10 11-2-6 9 10 5-11 4 3 11-9-7-8 8 2-11-11-3 10-6-4-11 11 2z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><circle cx="24" cy="24" r="4" fill="currentColor"/></symbol>
+<symbol id="i-minigun" viewBox="0 0 48 48"><circle cx="14" cy="24" r="8" fill="none" stroke="currentColor" stroke-width="3"/><g stroke="currentColor" stroke-width="4" stroke-linecap="round"><path d="M22 18h20M22 24h24M22 30h20"/></g></symbol>
+<symbol id="i-venom" viewBox="0 0 48 48"><path d="M24 5C24 5 12 22 12 30a12 12 0 0024 0C36 22 24 5 24 5z" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="20" cy="30" r="3" fill="currentColor"/><circle cx="28" cy="33" r="2" fill="currentColor"/></symbol>
+<symbol id="i-tesla" viewBox="0 0 48 48"><path d="M28 4L12 27h9l-3 17 16-23h-9z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></symbol>
+<symbol id="i-missile" viewBox="0 0 48 48"><path d="M30 4c5 5 5 14 0 19l-8 8-7-7 8-8c5-5 5-9 7-12z" fill="none" stroke="currentColor" stroke-width="3"/><path d="M15 27l-6 2 2-6M12 36c-3 3-5 5-8 8M18 30c-1 4-3 7-6 10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="27" cy="15" r="2.5" fill="currentColor"/></symbol>
+<symbol id="i-flame" viewBox="0 0 48 48"><path d="M24 4s-4 8-9 13C10 22 8 27 10 33a14 14 0 0028 0c0-5-3-8-6-12-1 3-3 5-5 6 1-8-1-14-3-23z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><circle cx="24" cy="33" r="5" fill="currentColor"/></symbol>
+<symbol id="i-laser" viewBox="0 0 48 48"><path d="M6 30l12-6 12 6-12 6z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M30 24h12" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><path d="M6 14h8M4 40h8" stroke="currentColor" stroke-width="2"/></symbol>
+<symbol id="i-gauss" viewBox="0 0 48 48"><path d="M6 18h36M6 30h36" stroke="currentColor" stroke-width="3"/><path d="M14 12v24M24 12v24M34 12v24" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></symbol>
+<symbol id="i-crusher" viewBox="0 0 48 48"><circle cx="24" cy="24" r="7" fill="none" stroke="currentColor" stroke-width="3"/><path d="M24 4v9M24 35v9M4 24h9M35 24h9" stroke="currentColor" stroke-width="5" stroke-linecap="round"/><circle cx="24" cy="24" r="2.5" fill="currentColor"/></symbol>
+<symbol id="i-heli" viewBox="0 0 48 48"><ellipse cx="24" cy="28" rx="11" ry="7" fill="none" stroke="currentColor" stroke-width="3"/><path d="M6 12h36M24 12v9M13 28H4m33 0h7M18 35v4M30 35v4M14 39h20" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="28" cy="27" r="2.5" fill="currentColor"/></symbol>
+<symbol id="i-miner" viewBox="0 0 48 48"><path d="M14 6l14 18-14 18-4-6 8-12-8-12z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><circle cx="32" cy="32" r="9" fill="none" stroke="currentColor" stroke-width="3"/><path d="M32 28v8M29 30h6" stroke="currentColor" stroke-width="2"/></symbol>
+<symbol id="i-plasma" viewBox="0 0 48 48"><circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="24" cy="12" r="4" fill="currentColor"/><circle cx="13" cy="30" r="4" fill="currentColor"/><circle cx="35" cy="30" r="4" fill="currentColor"/><circle cx="24" cy="24" r="4" fill="currentColor"/></symbol>
+<!-- ENEMIES -->
+<symbol id="i-en-regular" viewBox="0 0 48 48"><circle cx="24" cy="24" r="14" fill="currentColor"/><circle cx="24" cy="24" r="6" fill="#070b18"/></symbol>
+<symbol id="i-en-fast" viewBox="0 0 48 48"><path d="M40 24L10 8v32z" fill="currentColor"/></symbol>
+<symbol id="i-en-strong" viewBox="0 0 48 48"><rect x="10" y="10" width="28" height="28" rx="4" fill="currentColor"/><circle cx="18" cy="18" r="2.5" fill="#070b18"/><circle cx="30" cy="18" r="2.5" fill="#070b18"/><circle cx="18" cy="30" r="2.5" fill="#070b18"/><circle cx="30" cy="30" r="2.5" fill="#070b18"/></symbol>
+<symbol id="i-en-armored" viewBox="0 0 48 48"><polygon points="24,6 39,15 39,33 24,42 9,33 9,15" fill="currentColor"/><path d="M9 24h30" stroke="#070b18" stroke-width="4"/></symbol>
+<symbol id="i-en-healer" viewBox="0 0 48 48"><circle cx="24" cy="24" r="14" fill="currentColor"/><path d="M24 15v18M15 24h18" stroke="#070b18" stroke-width="6"/></symbol>
+<symbol id="i-en-toxic" viewBox="0 0 48 48"><circle cx="24" cy="26" r="14" fill="currentColor"/><circle cx="18" cy="14" r="5" fill="currentColor"/><circle cx="31" cy="12" r="3.5" fill="currentColor"/></symbol>
+<symbol id="i-en-icy" viewBox="0 0 48 48"><polygon points="24,4 34,24 24,44 14,24" fill="currentColor"/><path d="M24 4v40" stroke="#fff" stroke-width="2"/></symbol>
+<symbol id="i-en-fighter" viewBox="0 0 48 48"><path d="M42 24L8 12l8 12-8 12z" fill="currentColor"/></symbol>
+<symbol id="i-en-light" viewBox="0 0 48 48"><circle cx="24" cy="24" r="9" fill="currentColor"/><g stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M24 4v6M24 38v6M4 24h6M38 24h6M10 10l4 4M34 34l4 4M38 10l-4 4M14 34l-4 4"/></g></symbol>
+<symbol id="i-en-heli" viewBox="0 0 48 48"><ellipse cx="24" cy="28" rx="11" ry="7" fill="currentColor"/><path d="M6 12h36M24 12v9" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></symbol>
+<symbol id="i-en-jet" viewBox="0 0 48 48"><path d="M44 24L10 14l10 10-10 10z" fill="currentColor"/></symbol>
+<symbol id="i-en-boss" viewBox="0 0 48 48"><polygon points="24,3 42,14 42,34 24,45 6,34 6,14" fill="currentColor"/><circle cx="24" cy="24" r="7" fill="#070b18"/><circle cx="24" cy="24" r="3" fill="#fff"/></symbol>
+<symbol id="i-en-splitter" viewBox="0 0 48 48"><circle cx="24" cy="24" r="14" fill="currentColor"/><path d="M14 14l20 20" stroke="#070b18" stroke-width="4"/><circle cx="18" cy="29" r="3.5" fill="#fecaca"/><circle cx="30" cy="19" r="3.5" fill="#fecaca"/></symbol>
+<symbol id="i-en-broot" viewBox="0 0 48 48"><circle cx="24" cy="24" r="16" fill="currentColor"/><circle cx="24" cy="24" r="8" fill="#2e1065"/><circle cx="24" cy="24" r="3" fill="#fff"/><g stroke="#070b18" stroke-width="3"><path d="M24 8v6M24 34v6M8 24h6M34 24h6"/></g></symbol>
+<symbol id="i-en-constr" viewBox="0 0 48 48"><polygon points="24,4 42,14 42,34 24,44 6,34 6,14" fill="currentColor"/><rect x="15" y="15" width="8" height="8" fill="#070b18"/><rect x="25" y="15" width="8" height="8" fill="#070b18"/><rect x="15" y="25" width="8" height="8" fill="#070b18"/><rect x="25" y="25" width="8" height="8" fill="#070b18"/></symbol>
+<symbol id="i-en-metaphor" viewBox="0 0 48 48"><circle cx="24" cy="24" r="16" fill="#0b1026" stroke="currentColor" stroke-width="3"/><rect x="14" y="14" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" transform="rotate(15 24 24)"/><path d="M18 18l12 12M30 18L18 30" stroke="#ff5d7e" stroke-width="4" stroke-linecap="round"/></symbol>
+<!-- AVATARS -->
+<symbol id="i-av1" viewBox="0 0 48 48"><circle cx="24" cy="26" r="15" fill="#2bb3ff"/><path d="M9 22a15 15 0 0130 0v3H9z" fill="#134a8f"/><rect x="13" y="24" width="22" height="7" rx="3" fill="#070b18"/><circle cx="24" cy="36" r="3" fill="#070b18"/></symbol>
+<symbol id="i-av2" viewBox="0 0 48 48"><rect x="10" y="14" width="28" height="26" rx="6" fill="#9aa5d6"/><path d="M24 14V6M18 6h12" stroke="#39f5c8" stroke-width="3" stroke-linecap="round"/><circle cx="18" cy="25" r="3.5" fill="#070b18"/><circle cx="30" cy="25" r="3.5" fill="#070b18"/><path d="M18 33h12" stroke="#070b18" stroke-width="3" stroke-linecap="round"/></symbol>
+<symbol id="i-av3" viewBox="0 0 48 48"><circle cx="24" cy="27" r="14" fill="#ffb52e"/><path d="M10 20a14 14 0 0128 0z" fill="#7a4d1c"/><rect x="12" y="22" width="24" height="9" rx="4" fill="#070b18"/><circle cx="24" cy="36" r="2.5" fill="#070b18"/></symbol>
+<symbol id="i-av4" viewBox="0 0 48 48"><ellipse cx="24" cy="26" rx="14" ry="16" fill="#7dff5e"/><ellipse cx="18" cy="24" rx="4" ry="6" fill="#070b18" transform="rotate(-15 18 24)"/><ellipse cx="30" cy="24" rx="4" ry="6" fill="#070b18" transform="rotate(15 30 24)"/></symbol>
+<symbol id="i-av5" viewBox="0 0 48 48"><circle cx="24" cy="26" r="15" fill="#3a4266"/><rect x="9" y="12" width="30" height="8" rx="4" fill="#ff5d7e"/><rect x="12" y="24" width="24" height="6" rx="3" fill="#fff"/></symbol>
+<symbol id="i-av6" viewBox="0 0 48 48"><circle cx="24" cy="26" r="15" fill="#c9d4ff"/><path d="M24 11a15 15 0 010 30z" fill="#4a5480"/><circle cx="18" cy="25" r="3" fill="#070b18"/><circle cx="30" cy="25" r="3" fill="#39f5c8"/></symbol>
+<symbol id="i-av7" viewBox="0 0 48 48"><path d="M10 42V24a14 14 0 0128 0v18l-5-4-5 4-4-4-4 4-5-4z" fill="#e8ecff"/><circle cx="18" cy="24" r="3" fill="#070b18"/><circle cx="30" cy="24" r="3" fill="#070b18"/></symbol>
+<symbol id="i-av8" viewBox="0 0 48 48"><circle cx="24" cy="26" r="15" fill="#8b96c9"/><polygon points="24,14 27,21 34,21 28,25 30,32 24,28 18,32 20,25 14,21 21,21" fill="#ffe27a"/></symbol>
+<!-- UI -->
+<symbol id="i-play" viewBox="0 0 48 48"><path d="M14 8l26 16-26 16z" fill="currentColor"/></symbol>
+<symbol id="i-speed" viewBox="0 0 48 48"><path d="M8 10l14 14-14 14zM24 10l14 14-14 14z" fill="currentColor"/></symbol>
+<symbol id="i-pause" viewBox="0 0 48 48"><rect x="12" y="8" width="8" height="32" rx="2" fill="currentColor"/><rect x="28" y="8" width="8" height="32" rx="2" fill="currentColor"/></symbol>
+<symbol id="i-menu" viewBox="0 0 48 48"><path d="M8 14h32M8 24h32M8 34h32" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></symbol>
+<symbol id="i-coin" viewBox="0 0 48 48"><circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="24" cy="24" r="7" fill="currentColor"/></symbol>
+<symbol id="i-heart" viewBox="0 0 48 48"><path d="M24 42S8 30 8 18a9 9 0 0116-6 9 9 0 0116 6c0 12-16 24-16 24z" fill="currentColor"/></symbol>
+<symbol id="i-trophy" viewBox="0 0 48 48"><path d="M14 8h20v12a10 10 0 01-20 0zM14 12H6a8 8 0 008 10M34 12h8a8 8 0 01-8 10M24 30v6M16 42h16M20 36h8" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-lock" viewBox="0 0 48 48"><rect x="10" y="20" width="28" height="20" rx="4" fill="none" stroke="currentColor" stroke-width="3"/><path d="M16 20v-5a8 8 0 0116 0v5" fill="none" stroke="currentColor" stroke-width="3"/></symbol>
+<symbol id="i-dmg" viewBox="0 0 48 48"><path d="M10 38L30 10M30 10l8-2-2 8M14 30l-4 10 10-4" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-rate" viewBox="0 0 48 48"><path d="M6 16h20M4 24h24M6 32h20" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M30 12l12 12-12 12" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-range" viewBox="0 0 48 48"><circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="24" cy="24" r="8" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="24" cy="24" r="2.5" fill="currentColor"/><path d="M24 2v6M24 40v6M2 24h6M40 24h6" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></symbol>
+<symbol id="i-disc" viewBox="0 0 48 48"><circle cx="16" cy="16" r="6" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="32" cy="32" r="6" fill="none" stroke="currentColor" stroke-width="3"/><path d="M38 10L10 38" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></symbol>
+<symbol id="i-xp" viewBox="0 0 48 48"><polygon points="24,5 29,19 44,19 32,28 36,43 24,34 12,43 16,28 4,19 19,19" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/></symbol>
+<symbol id="i-crit" viewBox="0 0 48 48"><path d="M24 4l5 13 14 1-11 9 3 14-11-8-11 8 3-14-11-9 14-1z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M24 16v16M16 24h16" stroke="currentColor" stroke-width="2.5"/></symbol>
+<symbol id="i-nano" viewBox="0 0 48 48"><circle cx="24" cy="24" r="5" fill="currentColor"/><g fill="none" stroke="currentColor" stroke-width="2.5"><ellipse cx="24" cy="24" rx="20" ry="8"/><ellipse cx="24" cy="24" rx="20" ry="8" transform="rotate(60 24 24)"/><ellipse cx="24" cy="24" rx="20" ry="8" transform="rotate(120 24 24)"/></g></symbol>
+<symbol id="i-greed" viewBox="0 0 48 48"><circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="4"/><path d="M24 12v24M17 17c0-3 14-3 14 3s-14 2-14 8 14 5 14 2" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></symbol>
+</defs>
+</svg>
+
+<!-- ================= MENU ================= -->
+<div class="screen" id="scr-menu">
+  <div class="menu-wrap">
+    <img class="logo-img" src="assets/img/icon-512.png" alt="INFINITODE 5">
+    <div class="logo-title">INFINITODE 5</div>
+    <div class="logo-sub">TOWER DEFENSE</div>
+    <div class="profile-chip">
+      <span class="ava"><svg class="ic" id="menu-av"><use href="#i-av1"/></svg></span>
+      <span><b id="menu-name">Commander</b><span id="menu-lvl">LV 1</span></span>
+    </div>
+    <div class="menu-grid">
+      <button class="btn primary big" id="btn-play">▶ <span data-i18n="play">ГРАТИ</span></button>
+      <button class="btn ghost" id="btn-research">🔬 <span data-i18n="research">Дослідження</span></button>
+      <button class="btn ghost" id="btn-profile">👤 <span data-i18n="profile">Профіль</span></button>
+      <button class="btn ghost" id="btn-settings">⚙ <span data-i18n="settings">Налаштування</span></button>
+      <button class="btn ghost" id="btn-help">❓ <span data-i18n="help">Допомога</span></button>
+    </div>
+    <div class="menu-best" id="menu-best"></div>
+    <div class="menu-foot">v1.0.0 • <span data-i18n="offline">офлайн • без реклами</span> • ♪ Kevin MacLeod</div>
+  </div>
+</div>
+
+<!-- ================= MAPS ================= -->
+<div class="screen hidden" id="scr-maps">
+  <div class="narrow">
+    <h1 class="ttl" data-i18n="chooseMap">Обери мапу</h1>
+    <div id="maps-list"></div>
+    <div class="diff-row" id="diff-row"></div>
+    <label class="endless-row"><span class="switch"><input type="checkbox" id="chk-endless"><i></i></span><span data-i18n="endless">Нескінченний режим</span></label>
+    <button class="btn ghost" id="btn-maps-back" style="width:100%"><span data-i18n="back">← Назад</span></button>
+  </div>
+</div>
+
+<!-- ================= GAME ================= -->
+<div class="screen hidden" id="scr-game">
+  <div id="hud-top">
+    <span class="chip gold"><svg class="ic"><use href="#i-coin"/></svg><span id="hud-coins">0</span></span>
+    <span class="chip red"><svg class="ic"><use href="#i-heart"/></svg><span id="hud-lives">20</span></span>
+    <span class="chip blue">🌊 <span id="hud-wave">0</span></span>
+    <span class="chip green">★ <span id="hud-score">0</span></span>
+    <span class="hud-sp"></span>
+    <button class="hbtn" id="btn-speed"><svg class="ic"><use href="#i-speed"/></svg><span>1x</span></button>
+    <button class="hbtn" id="btn-pause"><svg class="ic"><use href="#i-pause"/></svg></button>
+    <button class="hbtn" id="btn-gamemenu"><svg class="ic"><use href="#i-menu"/></svg></button>
+    <button class="hbtn" id="btn-quests">📜</button>
+  </div>
+  <div id="cv-wrap">
+    <canvas id="cv"></canvas>
+    <div id="tower-panel" class="hidden">
+      <div class="tp-head">
+        <svg class="ic big" id="tp-icon"><use href="#i-basic"/></svg>
+        <b id="tp-name">—</b><span id="tp-lvl">LV 1</span>
+        <button id="tp-close">✕</button>
+      </div>
+      <div id="tp-stats"></div>
+      <div class="xpbar"><i id="tp-xp"></i></div>
+      <div id="tp-abilities"></div>
+      <div class="tp-btns">
+        <button class="btn small primary" id="tp-up">UP</button>
+        <button class="btn small ghost" id="tp-prio">🎯</button>
+        <button class="btn small danger" id="tp-sell">Sell</button>
+      </div>
+    </div>
+    <div id="toasts"></div>
+    <div id="ach-pop" class="hidden"></div>
+    <div id="quest-panel" class="hidden"></div>
+  </div>
+  <div id="wave-bar">
+    <div id="wave-preview"></div>
+    <button class="btn primary" id="btn-wave">START</button>
+  </div>
+  <div id="bottom-bar">
+    <div id="build-bar"></div>
+    <button id="btn-strike"><svg class="ic"><use href="#i-heli"/></svg><span>🚁</span></button>
+  </div>
+</div>
+
+<!-- ================= PROFILE ================= -->
+<div class="screen hidden" id="scr-profile">
+  <div class="narrow">
+    <h1 class="ttl" data-i18n="profile">Профіль</h1>
+    <div class="tabs">
+      <button class="btn small ghost active" id="tab-pf-profile">👤</button>
+      <button class="btn small ghost" id="tab-pf-ach">🏆 <span data-i18n="achievements">Досягнення</span></button>
+    </div>
+    <div id="pf-tab-profile">
+      <div class="pf-head">
+        <span class="bigava"><svg class="ic" id="pf-av"><use href="#i-av1"/></svg></span>
+        <div style="flex:1">
+          <input id="pf-name" maxlength="16" value="Commander">
+          <div><b id="pf-level">LV 1</b> • <span id="pf-rank">Рекрут</span></div>
+          <div class="xpbar"><i id="pf-xpfill"></i></div>
+          <span class="dim" id="pf-xptext">0 XP</span>
+        </div>
+      </div>
+      <h3 class="sec" data-i18n="avatar">Аватар</h3>
+      <div id="av-grid"></div>
+      <div id="pf-stats"></div>
+      <button class="btn primary" id="btn-pf-save" style="width:100%"><span data-i18n="save">Зберегти</span></button>
+    </div>
+    <div id="pf-tab-ach" class="hidden"><div id="pf-ach"></div></div>
+    <div style="height:10px"></div>
+    <button class="btn ghost" id="btn-pf-back" style="width:100%"><span data-i18n="back">← Назад</span></button>
+  </div>
+</div>
+
+<!-- ================= RESEARCH ================= -->
+<div class="screen hidden" id="scr-research">
+  <div class="narrow">
+    <h1 class="ttl" data-i18n="research">Дослідження</h1>
+    <div id="rp-points"></div>
+    <div id="cry-points"></div>
+    <div id="prestige-row"></div>
+    <div id="res-list"></div>
+    <button class="btn ghost" id="btn-res-back" style="width:100%"><span data-i18n="back">← Назад</span></button>
+  </div>
+</div>
+
+<!-- ================= SETTINGS ================= -->
+<div class="screen hidden" id="scr-settings">
+  <div class="narrow">
+    <h1 class="ttl" data-i18n="settings">Налаштування</h1>
+    <div class="set-row"><label data-i18n="music">Музика</label><input type="range" id="set-music" min="0" max="1" step="0.05"></div>
+    <div class="set-row"><label data-i18n="sfx">Звуки</label><input type="range" id="set-sfx" min="0" max="1" step="0.05"></div>
+    <div class="set-row"><label data-i18n="autowave">Авто-хвилі</label><span class="switch"><input type="checkbox" id="set-autowave"><i></i></span></div>
+    <div class="set-row"><label data-i18n="shake">Тряска екрану</label><span class="switch"><input type="checkbox" id="set-shake"><i></i></span></div>
+    <div class="set-row"><label data-i18n="lang">Мова</label>
+      <select id="set-lang"><option value="uk">Українська</option><option value="en">English</option></select>
+    </div>
+    <div style="height:10px"></div>
+    <button class="btn danger" id="btn-wipe" style="width:100%"><span data-i18n="wipe">Скинути прогрес</span></button>
+    <div style="height:10px"></div>
+    <button class="btn ghost" id="btn-set-back" style="width:100%"><span data-i18n="back">← Назад</span></button>
+  </div>
+</div>
+
+<!-- ================= HELP ================= -->
+<div class="screen hidden" id="scr-help">
+  <div class="narrow">
+    <h1 class="ttl" data-i18n="help">Допомога</h1>
+    <h3 class="sec" data-i18n="howto">Як грати</h3>
+    <div class="help-block" id="help-text"></div>
+    <h3 class="sec" data-i18n="towers">Турелі</h3>
+    <div id="help-towers"></div>
+    <h3 class="sec" data-i18n="enemiesInfo">Вороги</h3>
+    <div id="help-enemies"></div>
+    <h3 class="sec" data-i18n="musicTitle">Музика</h3>
+    <div class="help-block" id="help-music"></div>
+    <button class="btn ghost" id="btn-res-back2" style="width:100%;display:none"></button>
+    <button class="btn ghost" id="btn-help-back" style="width:100%"><span data-i18n="back">← Назад</span></button>
+  </div>
+</div>
+
+<!-- ================= MODAL ================= -->
+<div id="modal" class="hidden"><div id="modal-card"></div></div>
+
+<script src="js/balance.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/render.js"></script>
+<script src="js/ui.js"></script>
+</body>
+</html>

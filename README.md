@@ -22,6 +22,30 @@
 
 Також можна грати прямо в браузері: відкрий `game/index.html` (або запусти `python3 -m http.server` в папці `game/`).
 
+---
+
+![INFINITODE 5](game5/assets/img/banner-1200.png)
+
+## 🚁 INFINITODE 5 — друга гра! (NEW)
+
+**Зовсім окремий проєкт**: ставиться **поруч** з Infinitode 4 окремою іконкою, має свої збереження і свій підпис. Все з четвірки — плюс те, чого там не було:
+
+- 📜 **Квести** — 3 випадкові завдання кожну гру з нагородами
+- 👑 **Престиж** — нескінченні рівні (+2% шкоди, +3% монет)
+- ⭐ **Зірки** — до 3 за мапу за чисте проходження
+- 💎 **Кристали** — майнери на кристалах + нано-дослідження
+- 🗺 **6 мап** (+ Вулкан, Кристалові печери, Штормовий пік)
+- 💀 **4 боси** (Громила, Брут, Конструктор, Метафора)
+- 🎚 **3 складності** (Норма / Хард / Брутал)
+- 🔮 **17-та туреля — Плазма**, вежі до **20 рівня** з **УЛЬТІМОЮ**
+- 🔬 13 гілок досліджень, 🏆 22 досягнення
+
+👉 **APK**: [Releases](../../releases) → `Infinitode5-vX.Y.Z-release.apk` (тег `5-vX.Y.Z`). Окремий пакет `com.infinitode5.game` — ігри не конфліктують.
+
+> 🇬🇧 A separate sequel: installs **alongside** Infinitode 4 with its own saves. Everything from 4 plus quests, prestige, stars, crystals, 6 maps, 4 bosses, 3 difficulties, Plasma tower, level-20 towers with ULTIMA.
+
+---
+
 ## 🗼 16 турелей + бонуси
 
 | # | Турель | Особливість |
@@ -61,17 +85,17 @@
 ## 🛠 Розробка / Development
 
 ```
-game/            HTML5 гра (Canvas + SVG UI, без залежностей)
-  js/            balance • engine • render • ui • audio • storage
-  assets/        іконки, фони, музика (генеруються в tools/)
-android/         Gradle-обгортка (WebView, офлайн)
+game/            INFINITODE 4 (Canvas + SVG UI, без залежностей)
+game5/           INFINITODE 5 — окрема гра: квести, престиж, зірки, 6 мап, 4 боси
+android/         Gradle-обгортка v4 (WebView, офлайн)
+android5/        Gradle-обгортка v5 (пакет com.infinitode5.game)
 tools/           генератори асетьів + тести (node)
 .github/         CI: тести → підписані APK → Release
 ```
 
 ```bash
-# тести
-cd tools && npm install && npm test
+# тести (v4 + v5)
+cd tools && npm install && npm test && npm run test5
 
 # перегенерувати асети (іконки/фони/музика)
 node tools/gen-assets.mjs && node tools/gen-music.mjs
@@ -80,7 +104,7 @@ node tools/gen-assets.mjs && node tools/gen-music.mjs
 python3 -m http.server 8080 --directory game
 ```
 
-APK збирається автоматично в **GitHub Actions** при кожному пуші і публікується в [Releases](../../releases). Підписаний стабільним demo-ключем (`android/infinitode4-release.p12`), тож оновлення ставляться поверх. Для публікації в Google Play згенеруй власний ключ і не комміть його.
+APK збирається автоматично в **GitHub Actions** при кожному пуші і публікується в [Releases](../../releases). Підписані стабільними demo-ключами (`android/infinitode4-release.p12`, `android5/infinitode5-release.p12`), тож оновлення ставляться поверх. Релізи: тег `vX.Y.Z` для четвірки, `5-vX.Y.Z` для п'ятірки. Для публікації в Google Play згенеруй власний ключ і не комміть його.
 
 ## 📄 Ліцензія
 

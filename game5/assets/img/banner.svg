@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1026"/><stop offset=".5" stop-color="#141b3f"/><stop offset="1" stop-color="#2a1245"/>
+    </linearGradient>
+    <linearGradient id="tx" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ff7ad9"/><stop offset=".5" stop-color="#ffa53c"/><stop offset="1" stop-color="#b06bff"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe27a"/><stop offset="1" stop-color="#e07b12"/>
+    </linearGradient>
+    <pattern id="gr" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M60 0H0v60" fill="none" stroke="#fff" stroke-opacity=".05" stroke-width="2"/>
+    </pattern>
+    <filter id="gl" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="10" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#gr)"/>
+  <polygon points="600,60 180,300 180,560 600,590 1020,560 1020,300" fill="none" stroke="url(#tx)" stroke-width="6" opacity=".5" filter="url(#gl)"/>
+  <g fill="#fff">
+    <circle cx="120" cy="120" r="4" opacity=".8"/><circle cx="150" cy="480" r="3" opacity=".6"/>
+    <circle cx="1060" cy="140" r="4" opacity=".8"/><circle cx="1100" cy="500" r="3" opacity=".6"/>
+    <circle cx="600" cy="80" r="3" opacity=".7"/><circle cx="90" cy="320" r="3" opacity=".5"/>
+  </g>
+  <text x="600" y="270" text-anchor="middle" font-family="'Arial Black',Arial,sans-serif" font-weight="900" font-size="118" letter-spacing="6" fill="url(#tx)" filter="url(#gl)">INFINITODE 5</text>
+  <text x="600" y="340" text-anchor="middle" font-family="Arial,sans-serif" font-size="34" letter-spacing="10" fill="#e8ecff" opacity=".9">TOWER DEFENSE • ТУРЕЛІ • ВЕРТОЛЬОТИ</text>
+  <g transform="translate(600 440)">
+    <rect x="-460" y="-36" width="920" height="76" rx="38" fill="#000" fill-opacity=".35" stroke="url(#gold)" stroke-width="5" filter="url(#gl)"/>
+    <text x="0" y="14" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="33" fill="#ffe27a">17 ТУРЕЛЕЙ • КВЕСТИ • 6 МАП • БОСИ</text>
+  </g>
+  <text x="600" y="580" text-anchor="middle" font-family="Arial,sans-serif" font-size="24" fill="#9aa5d6" letter-spacing="4">ANDROID APK • ОФЛАЙН • БЕЗ РЕКЛАМИ</text>
+</svg>

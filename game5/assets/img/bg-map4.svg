@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 768" width="1280" height="768">
+  <defs>
+    <linearGradient id="t" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#260b0b"/><stop offset=".6" stop-color="#3d1410"/><stop offset="1" stop-color="#170808"/>
+    </linearGradient>
+    <radialGradient id="v" cx=".5" cy=".45" r=".8">
+      <stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".5"/>
+    </radialGradient>
+    <pattern id="g" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0v64" fill="none" stroke="#ff6b4a" stroke-opacity=".09" stroke-width="2"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="768" fill="url(#t)"/>
+  <g opacity=".6">
+    <ellipse cx="250" cy="620" rx="300" ry="110" fill="#7a2418" opacity=".6"/>
+    <ellipse cx="1020" cy="170" rx="270" ry="100" fill="#7a2418" opacity=".5"/>
+    <ellipse cx="640" cy="400" rx="460" ry="150" fill="#521812" opacity=".55"/>
+  </g>
+  <g stroke="#ff9a3c" stroke-opacity=".3" stroke-width="4" fill="none" stroke-linecap="round">
+    <path d="M60 500 q80 -20 140 10 t160 -10 t140 10"/>
+    <path d="M780 640 q80 -20 140 10 t160 -10 t120 5"/>
+    <path d="M880 120 q60 -15 110 8 t110 -8"/>
+  </g>
+  <g fill="#ff9a3c" opacity=".8">
+    <circle cx="180" cy="200" r="4"/><circle cx="420" cy="650" r="3"/><circle cx="700" cy="150" r="4"/>
+    <circle cx="950" cy="420" r="3"/><circle cx="1150" cy="600" r="4"/><circle cx="560" cy="330" r="3"/>
+  </g>
+  <g fill="none" stroke="#ff6b4a" stroke-opacity=".16" stroke-width="2">
+    <polygon points="200,300 230,317 230,352 200,369 170,352 170,317"/>
+    <polygon points="1080,420 1105,434 1105,463 1080,477 1055,463 1055,434"/>
+    <circle cx="520" cy="180" r="28"/><circle cx="820" cy="560" r="22"/>
+  </g>
+  <rect width="1280" height="768" fill="url(#g)"/>
+  <rect width="1280" height="768" fill="url(#v)"/>
+</svg>

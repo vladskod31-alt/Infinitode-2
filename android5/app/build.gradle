@@ -1,0 +1,48 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.infinitode5.game'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.infinitode5.game'
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName '1.0.0'
+    }
+
+    signingConfigs {
+        release {
+            storeFile rootProject.file('infinitode5-release.p12')
+            storePassword INF5_STORE_PASSWORD
+            keyAlias INF5_KEY_ALIAS
+            keyPassword INF5_KEY_PASSWORD
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            shrinkResources false
+        }
+        debug {
+            applicationIdSuffix '.debug'
+        }
+    }
+
+    // Bundle the HTML5 game as WebView assets
+    sourceSets {
+        main {
+            assets.srcDirs += ['../../game5']
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}

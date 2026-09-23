@@ -1,17 +1,22 @@
-// Headless gameplay simulation test. Run: node tools/test-sim.mjs
+// Headless gameplay simulation test. Run: node tools/test-sim.mjs (GAME_DIR=game5 for v5)
 import { createRequire } from 'module';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 const require = createRequire(import.meta.url);
+const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+const GAME = process.env.GAME_DIR || 'game';
+console.log('Testing dir:', GAME);
 
 // ---- stubs ----
 globalThis.STORE = {
-  S: { settings: { autowave: false, lang: 'uk', shake: false }, stats: { games: 1 }, research: { points: 0, levels: {} }, profile: { name: 'Test', xp: 0 } },
+  S: { settings: { autowave: false, lang: 'uk', shake: false }, stats: { games: 1, stars: {} }, research: { points: 0, crystals: 0, prestige: 0, levels: {} }, profile: { name: 'Test', xp: 0 } },
   unlockAch: () => null, save: () => {}, level: () => 1,
 };
 globalThis.AUDIO = { SFX: new Proxy({}, { get: () => () => {} }) };
 
-const BAL = require('../game/js/balance.js');
+const BAL = require(join(root, GAME, 'js/balance.js'));
 globalThis.BAL = BAL;
-require('../game/js/engine.js');
+require(join(root, GAME, 'js/engine.js'));
 const Game = globalThis.Game;
 
 let fails = 0;
@@ -89,6 +94,7 @@ function simMap(mapId, maxWave) {
 const g1 = simMap('valley', 12);
 simMap('desert', 10);
 const g3 = simMap('arctic', 10);
+if (BAL.MAPS.some(m => m.id === 'storm')) simMap('storm', 6);
 ok(g1.kills > 200, `valley kills=${g1.kills} (>200)`);
 ok(g1.earned > 500, `valley earned=${Math.round(g1.earned)} (>500)`);
 ok(g3.enemies.length === 0, 'no stuck enemies after clear');

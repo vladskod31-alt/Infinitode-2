@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 768" width="1280" height="768">
+  <defs>
+    <linearGradient id="t" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b1608"/><stop offset=".6" stop-color="#3d2410"/><stop offset="1" stop-color="#1d1008"/>
+    </linearGradient>
+    <radialGradient id="v" cx=".5" cy=".45" r=".8">
+      <stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/>
+    </radialGradient>
+    <pattern id="g" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0v64" fill="none" stroke="#ffb52e" stroke-opacity=".08" stroke-width="2"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="768" fill="url(#t)"/>
+  <g opacity=".55">
+    <ellipse cx="240" cy="600" rx="320" ry="120" fill="#6b4218" opacity=".6"/>
+    <ellipse cx="1000" cy="180" rx="280" ry="110" fill="#6b4218" opacity=".5"/>
+    <ellipse cx="640" cy="420" rx="460" ry="150" fill="#4a2c10" opacity=".5"/>
+    <circle cx="500" cy="180" r="100" fill="#7a4d1c" opacity=".35"/>
+    <circle cx="900" cy="600" r="80" fill="#7a4d1c" opacity=".35"/>
+  </g>
+  <g stroke="#ffb52e" stroke-opacity=".14" stroke-width="3" fill="none">
+    <path d="M80 200 q60 -30 120 0 t120 0 t120 0"/>
+    <path d="M700 620 q60 -30 120 0 t120 0 t120 0"/>
+    <path d="M900 300 q40 -20 80 0 t80 0"/>
+    <circle cx="200" cy="420" r="30"/><circle cx="1080" cy="480" r="22"/>
+    <polygon points="620,140 650,157 650,192 620,209 590,192 590,157"/>
+  </g>
+  <rect width="1280" height="768" fill="url(#g)"/>
+  <rect width="1280" height="768" fill="url(#v)"/>
+</svg>

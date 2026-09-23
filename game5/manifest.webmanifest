@@ -1,0 +1,14 @@
+{
+  "name": "INFINITODE 5 — Tower Defense",
+  "short_name": "Infinitode 5",
+  "description": "Tower defense: 17 турелей, квести, престиж, 6 мап, 4 боси, 3 складності. Офлайн, без реклами.",
+  "start_url": "./index.html",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#070b18",
+  "theme_color": "#070b18",
+  "icons": [
+    { "src": "assets/img/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/img/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
