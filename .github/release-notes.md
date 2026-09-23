@@ -2,9 +2,9 @@
 
 # 🚁 INFINITODE 4 — Tower Defense
 
-Нова крута tower defense в дусі Infinitode 2: **16 видів турелей, бойові вертольоти, боси, 3 мапи та безкінечний режим**. Повністю офлайн, без реклами і донату. Важить лише ~23 МБ!
+Нова крута tower defense в дусі Infinitode 2: **16 видів турелей, бойові вертольоти, боси, 3 мапи та безкінечний режим**. Повністю офлайн, без реклами і донату. Важить лише **~8 МБ**!
 
-A brand-new tower defense in the spirit of Infinitode 2: **16 turret types, attack helicopters, bosses, 3 maps and endless mode**. Fully offline, no ads, no in-app purchases. Only ~23 MB!
+A brand-new tower defense in the spirit of Infinitode 2: **16 turret types, attack helicopters, bosses, 3 maps and endless mode**. Fully offline, no ads, no in-app purchases. Only **~8 MB**!
 
 ## 📥 Встановлення / Install
 

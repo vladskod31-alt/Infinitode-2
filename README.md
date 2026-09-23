@@ -4,13 +4,13 @@
 
 [![Build APK](https://github.com/vladskod31-alt/Infinitode-2/actions/workflows/build-apk.yml/badge.svg)](https://github.com/vladskod31-alt/Infinitode-2/actions/workflows/build-apk.yml)
 [![Release](https://img.shields.io/github/v/release/vladskod31-alt/Infinitode-2?label=APK)](https://github.com/vladskod31-alt/Infinitode-2/releases)
-[![Size](https://img.shields.io/badge/size-~23%20MB-green)](https://github.com/vladskod31-alt/Infinitode-2/releases)
+[![Size](https://img.shields.io/badge/APK-~8%20MB-green)](https://github.com/vladskod31-alt/Infinitode-2/releases)
 [![Offline](https://img.shields.io/badge/offline-100%25-blue)](https://github.com/vladskod31-alt/Infinitode-2)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-Нова **tower defense** в дусі легендарної **Infinitode 2**: **16 видів турелей**, бойові **вертольоти**, епічні **боси**, 3 мапи і безкінечний режим. Класний SVG-інтерфейс, профіль командира, дослідження, досягнення. **Повністю офлайн, без реклами**, важить лише **~23 МБ**.
+Нова **tower defense** в дусі легендарної **Infinitode 2**: **16 видів турелей**, бойові **вертольоти**, епічні **боси**, 3 мапи і безкінечний режим. Класний SVG-інтерфейс, профіль командира, дослідження, досягнення. **Повністю офлайн, без реклами**, важить лише **~8 МБ**.
 
-> 🇬🇧 A brand-new tower defense in the spirit of Infinitode 2: 16 turret types, attack helicopters, epic bosses, 3 maps and endless mode. Classy SVG UI, commander profile, research, achievements. **Fully offline, no ads**, only **~23 MB**.
+> 🇬🇧 A brand-new tower defense in the spirit of Infinitode 2: 16 turret types, attack helicopters, epic bosses, 3 maps and endless mode. Classy SVG UI, commander profile, research, achievements. **Fully offline, no ads**, only **~8 MB**.
 
 ## 📥 Завантажити APK / Download
 
