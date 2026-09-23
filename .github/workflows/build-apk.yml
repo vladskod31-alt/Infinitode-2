@@ -69,6 +69,23 @@ jobs:
           name: infinitode4-apks
           path: dist/*.apk
 
+      - name: Report failure details
+        if: failure()
+        run: |
+          {
+            echo '== env =='
+            which gradle || echo 'NO GRADLE ON PATH'
+            echo "ANDROID_HOME=$ANDROID_HOME ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+            ls "$ANDROID_HOME" 2>/dev/null || echo 'no ANDROID_HOME listing'
+            echo '== debug log tail =='
+            tail -n 45 /tmp/gradle-debug.log 2>/dev/null || echo 'no debug log'
+            echo '== release log tail =='
+            tail -n 25 /tmp/gradle-release.log 2>/dev/null || echo 'no release log'
+          } > /tmp/fail.txt || true
+          cat /tmp/fail.txt
+          MSG=$(head -c 5500 /tmp/fail.txt | sed 's/%/%25/g; s/\r//g' | tr '\n' '|' | sed 's/|/%0A/g')
+          echo "::error::Gradle failed:%0A${MSG}"
+
       - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
