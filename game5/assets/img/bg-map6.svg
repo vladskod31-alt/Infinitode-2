@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 768" width="1280" height="768">
+  <defs>
+    <linearGradient id="t" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#101a12"/><stop offset=".6" stop-color="#1c2b1e"/><stop offset="1" stop-color="#0e1420"/>
+    </linearGradient>
+    <radialGradient id="v" cx=".5" cy=".45" r=".8">
+      <stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".5"/>
+    </radialGradient>
+    <pattern id="g" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0v64" fill="none" stroke="#c7f464" stroke-opacity=".08" stroke-width="2"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="768" fill="url(#t)"/>
+  <g opacity=".5">
+    <ellipse cx="220" cy="200" rx="280" ry="110" fill="#2b4423" opacity=".6"/>
+    <ellipse cx="1060" cy="560" rx="280" ry="120" fill="#24303a" opacity=".6"/>
+    <ellipse cx="660" cy="400" rx="450" ry="160" fill="#22331f" opacity=".5"/>
+  </g>
+  <g stroke="#c7f464" stroke-opacity=".28" stroke-width="3" fill="none">
+    <polyline points="150,100 170,150 158,200 185,260 170,320"/>
+    <polyline points="1150,120 1130,180 1145,240 1120,300"/>
+    <polyline points="620,80 635,140 622,190"/>
+  </g>
+  <g fill="none" stroke="#c7f464" stroke-opacity=".15" stroke-width="2">
+    <polygon points="350,480 380,497 380,532 350,549 320,532 320,497"/>
+    <polygon points="900,180 925,194 925,223 900,237 875,223 875,194"/>
+    <circle cx="520" cy="600" r="26"/><circle cx="820" cy="420" r="20"/>
+  </g>
+  <rect width="1280" height="768" fill="url(#g)"/>
+  <rect width="1280" height="768" fill="url(#v)"/>
+</svg>

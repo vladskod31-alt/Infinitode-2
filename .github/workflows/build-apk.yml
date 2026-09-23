@@ -1,0 +1,181 @@
+name: Build APK
+
+on:
+  push:
+    branches: [main, 'arena/**']
+    paths: ['game/**', 'android/**', 'game5/**', 'android5/**', '.github/**', 'tools/**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  VERSION_NAME: '2.0.0'
+  VERSION5_NAME: '1.1.0-preview'
+
+jobs:
+  test:
+    name: Game tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install tool deps
+        working-directory: tools
+        run: npm install --no-audit --no-fund
+      - name: Engine simulation test
+        run: node tools/test-sim.mjs
+      - name: UI smoke test
+        run: node tools/test-ui.mjs
+      - name: Engine simulation test (game5)
+        run: GAME_DIR=game5 node tools/test-sim.mjs
+      - name: UI smoke test (game5)
+        run: GAME_DIR=game5 node tools/test-ui.mjs
+      - name: Edge-case tests (game5)
+        run: node tools/test-edge5.mjs
+
+  build:
+    name: Build & Release APK
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
+
+      - name: Assemble debug APK
+        run: |
+          set -o pipefail
+          gradle :app:assembleDebug --project-dir android --no-daemon --console=plain --stacktrace 2>&1 | tee /tmp/gradle-debug.log
+
+      - name: Assemble release APK (signed)
+        run: |
+          set -o pipefail
+          gradle :app:assembleRelease --project-dir android --no-daemon --console=plain --stacktrace 2>&1 | tee /tmp/gradle-release.log
+
+      - name: Collect APKs
+        run: |
+          mkdir -p dist
+          cp android/app/build/outputs/apk/debug/app-debug.apk "dist/Infinitode4-v${VERSION_NAME}-debug.apk"
+          cp android/app/build/outputs/apk/release/app-release.apk "dist/Infinitode4-v${VERSION_NAME}-release.apk"
+          ls -la dist
+          du -h dist/*
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: infinitode4-apks
+          path: dist/*.apk
+
+      - name: Report failure details
+        if: failure()
+        run: |
+          {
+            echo '== env =='
+            which gradle || echo 'NO GRADLE ON PATH'
+            echo "ANDROID_HOME=$ANDROID_HOME ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+            ls "$ANDROID_HOME" 2>/dev/null || echo 'no ANDROID_HOME listing'
+            echo '== debug log tail =='
+            tail -n 45 /tmp/gradle-debug.log 2>/dev/null || echo 'no debug log'
+            echo '== release log tail =='
+            tail -n 25 /tmp/gradle-release.log 2>/dev/null || echo 'no release log'
+          } > /tmp/fail.txt || true
+          cat /tmp/fail.txt
+          MSG=$(head -c 5500 /tmp/fail.txt | sed 's/%/%25/g; s/\r//g' | tr '\n' '|' | sed 's/|/%0A/g')
+          echo "::error::Gradle failed:%0A${MSG}"
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="v${VERSION_NAME}"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG exists — updating APKs"
+            gh release upload "$TAG" dist/*.apk --clobber
+          else
+            echo "Creating release $TAG"
+            gh release create "$TAG" dist/*.apk \
+              --title "🚁 INFINITODE 4 v${VERSION_NAME}" \
+              --notes-file .github/release-notes.md
+          fi
+
+  build5:
+    name: Build & Release APK (INFINITODE 5)
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
+
+      - name: Assemble debug APK
+        run: |
+          set -o pipefail
+          gradle :app:assembleDebug --project-dir android5 --no-daemon --console=plain --stacktrace 2>&1 | tee /tmp/gradle5-debug.log
+
+      - name: Assemble release APK (signed)
+        run: |
+          set -o pipefail
+          gradle :app:assembleRelease --project-dir android5 --no-daemon --console=plain --stacktrace 2>&1 | tee /tmp/gradle5-release.log
+
+      - name: Collect APKs
+        run: |
+          mkdir -p dist5
+          cp android5/app/build/outputs/apk/debug/app-debug.apk "dist5/Infinitode5-v${VERSION5_NAME}-debug.apk"
+          cp android5/app/build/outputs/apk/release/app-release.apk "dist5/Infinitode5-v${VERSION5_NAME}-release.apk"
+          ls -la dist5
+          du -h dist5/*
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: infinitode5-apks
+          path: dist5/*.apk
+
+      - name: Report failure details
+        if: failure()
+        run: |
+          {
+            echo '== env =='
+            which gradle || echo 'NO GRADLE ON PATH'
+            echo "ANDROID_HOME=$ANDROID_HOME ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+            ls "$ANDROID_HOME" 2>/dev/null || echo 'no ANDROID_HOME listing'
+            echo '== debug log tail =='
+            tail -n 45 /tmp/gradle5-debug.log 2>/dev/null || echo 'no debug log'
+            echo '== release log tail =='
+            tail -n 25 /tmp/gradle5-release.log 2>/dev/null || echo 'no release log'
+          } > /tmp/fail5.txt || true
+          cat /tmp/fail5.txt
+          MSG=$(head -c 5500 /tmp/fail5.txt | sed 's/%/%25/g; s/\r//g' | tr '\n' '|' | sed 's/|/%0A/g')
+          echo "::error::Gradle 5 failed:%0A${MSG}"
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="5-v${VERSION5_NAME}"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG exists — updating APKs"
+            gh release upload "$TAG" dist5/*.apk --clobber
+          else
+            echo "Creating release $TAG"
+            gh release create "$TAG" dist5/*.apk \
+              --title "🚁 INFINITODE 5 v${VERSION5_NAME} (PREVIEW)" \
+              --notes-file .github/release-notes-5.md --prerelease
+          fi

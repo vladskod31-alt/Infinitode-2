@@ -1,0 +1,14 @@
+*.jks
+*.keystore
+*.log
+.DS_Store
+android/.gradle/
+android/app/build/
+android/build/
+android/local.properties
+android5/.gradle/
+android5/app/build/
+android5/build/
+android5/local.properties
+node_modules
+node_modules/

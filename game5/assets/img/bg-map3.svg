@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 768" width="1280" height="768">
+  <defs>
+    <linearGradient id="t" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a1030"/><stop offset=".6" stop-color="#16204d"/><stop offset="1" stop-color="#25124a"/>
+    </linearGradient>
+    <radialGradient id="v" cx=".5" cy=".45" r=".8">
+      <stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".5"/>
+    </radialGradient>
+    <pattern id="g" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0v64" fill="none" stroke="#7db4ff" stroke-opacity=".08" stroke-width="2"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="768" fill="url(#t)"/>
+  <g fill="#fff">
+    <circle cx="120" cy="90" r="2.5" opacity=".8"/><circle cx="300" cy="150" r="1.8" opacity=".6"/>
+    <circle cx="520" cy="70" r="2.2" opacity=".9"/><circle cx="700" cy="140" r="1.6" opacity=".5"/>
+    <circle cx="880" cy="80" r="2.6" opacity=".85"/><circle cx="1060" cy="160" r="1.9" opacity=".6"/>
+    <circle cx="1180" cy="70" r="2.3" opacity=".8"/><circle cx="60" cy="300" r="1.7" opacity=".5"/>
+    <circle cx="420" cy="320" r="2" opacity=".55"/><circle cx="980" cy="330" r="2.1" opacity=".6"/>
+    <circle cx="240" cy="500" r="1.8" opacity=".5"/><circle cx="760" cy="520" r="2.2" opacity=".6"/>
+    <circle cx="1150" cy="540" r="1.9" opacity=".55"/><circle cx="180" cy="680" r="2.4" opacity=".7"/>
+    <circle cx="620" cy="700" r="1.8" opacity=".5"/><circle cx="1000" cy="690" r="2.2" opacity=".65"/>
+    <path d="M1080 110 l6 14 14 6 -14 6 -6 14 -6 -14 -14 -6 14 -6z" opacity=".9"/>
+    <path d="M220 220 l5 11 11 5 -11 5 -5 11 -5 -11 -11 -5 11 -5z" opacity=".7"/>
+    <path d="M820 240 l5 11 11 5 -11 5 -5 11 -5 -11 -11 -5 11 -5z" opacity=".7"/>
+  </g>
+  <g opacity=".5">
+    <ellipse cx="300" cy="560" rx="300" ry="120" fill="#2a3f7a" opacity=".5"/>
+    <ellipse cx="1000" cy="240" rx="260" ry="110" fill="#3d2a7a" opacity=".45"/>
+    <ellipse cx="640" cy="430" rx="440" ry="160" fill="#1d2c5c" opacity=".5"/>
+  </g>
+  <g fill="none" stroke="#9fd0ff" stroke-opacity=".16" stroke-width="2">
+    <polygon points="180,420 220,443 220,489 180,512 140,489 140,443"/>
+    <polygon points="1100,560 1130,577 1130,612 1100,629 1070,612 1070,577"/>
+    <circle cx="520" cy="240" r="30"/><circle cx="800" cy="600" r="24"/>
+  </g>
+  <rect width="1280" height="768" fill="url(#g)"/>
+  <rect width="1280" height="768" fill="url(#v)"/>
+</svg>

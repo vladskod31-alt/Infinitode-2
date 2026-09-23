@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 768" width="1280" height="768">
+  <defs>
+    <linearGradient id="t" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b1a26"/><stop offset=".6" stop-color="#12303a"/><stop offset="1" stop-color="#1a1040"/>
+    </linearGradient>
+    <radialGradient id="v" cx=".5" cy=".45" r=".8">
+      <stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".5"/>
+    </radialGradient>
+    <pattern id="g" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0v64" fill="none" stroke="#5ef2d8" stroke-opacity=".09" stroke-width="2"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="768" fill="url(#t)"/>
+  <g opacity=".55">
+    <ellipse cx="300" cy="180" rx="290" ry="110" fill="#14505c" opacity=".6"/>
+    <ellipse cx="1000" cy="600" rx="300" ry="120" fill="#2a1a5c" opacity=".55"/>
+    <ellipse cx="640" cy="420" rx="440" ry="150" fill="#143a4a" opacity=".5"/>
+  </g>
+  <g fill="#5ef2d8" opacity=".75">
+    <polygon points="200,240 214,270 200,300 186,270"/>
+    <polygon points="228,260 238,282 228,304 218,282"/>
+    <polygon points="1050,180 1066,214 1050,248 1034,214"/>
+    <polygon points="1080,200 1090,222 1080,244 1070,222"/>
+    <polygon points="600,620 618,656 600,692 582,656"/>
+    <polygon points="640,600 652,626 640,652 628,626"/>
+    <polygon points="900,420 912,446 900,472 888,446"/>
+  </g>
+  <g fill="none" stroke="#5ef2d8" stroke-opacity=".16" stroke-width="2">
+    <polygon points="420,140 450,157 450,192 420,209 390,192 390,157"/>
+    <circle cx="760" cy="240" r="26"/><circle cx="340" cy="520" r="30"/>
+  </g>
+  <rect width="1280" height="768" fill="url(#g)"/>
+  <rect width="1280" height="768" fill="url(#v)"/>
+</svg>

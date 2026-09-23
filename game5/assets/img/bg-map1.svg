@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 768" width="1280" height="768">
+  <defs>
+    <linearGradient id="t" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d2117"/><stop offset=".6" stop-color="#123322"/><stop offset="1" stop-color="#0a1f2b"/>
+    </linearGradient>
+    <radialGradient id="v" cx=".5" cy=".45" r=".8">
+      <stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/>
+    </radialGradient>
+    <pattern id="g" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0v64" fill="none" stroke="#39f5c8" stroke-opacity=".07" stroke-width="2"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="768" fill="url(#t)"/>
+  <g opacity=".5">
+    <ellipse cx="200" cy="150" rx="260" ry="120" fill="#1d5c3a" opacity=".5"/>
+    <ellipse cx="1050" cy="620" rx="300" ry="130" fill="#14505c" opacity=".5"/>
+    <ellipse cx="700" cy="380" rx="420" ry="180" fill="#173f2a" opacity=".4"/>
+    <circle cx="420" cy="600" r="90" fill="#1d5c3a" opacity=".35"/>
+    <circle cx="950" cy="180" r="70" fill="#1d5c3a" opacity=".35"/>
+  </g>
+  <g fill="none" stroke="#39f5c8" stroke-opacity=".12" stroke-width="2">
+    <polygon points="150,80 190,103 190,149 150,172 110,149 110,103"/>
+    <polygon points="1120,120 1152,138 1152,175 1120,193 1088,175 1088,138"/>
+    <polygon points="620,660 660,683 660,729 620,752 580,729 580,683"/>
+    <polygon points="150,600 175,614 175,643 150,657 125,643 125,614"/>
+    <circle cx="420" cy="200" r="26"/><circle cx="870" cy="560" r="34"/><circle cx="1050" cy="330" r="20"/>
+  </g>
+  <rect width="1280" height="768" fill="url(#g)"/>
+  <rect width="1280" height="768" fill="url(#v)"/>
+</svg>

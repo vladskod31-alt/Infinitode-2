@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 432 432" width="432" height="432">
+  <defs>
+    <linearGradient id="m" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8b96c9"/><stop offset="1" stop-color="#232842"/>
+    </linearGradient>
+    <linearGradient id="n" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff7ad9"/><stop offset="1" stop-color="#ffa53c"/>
+    </linearGradient>
+    <radialGradient id="c" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#ffe2f6"/><stop offset=".6" stop-color="#ff7ad9"/><stop offset="1" stop-color="#6e0b4d" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="g" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="7" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g transform="translate(216 216)">
+    <polygon points="0,-150 -130,-75 -130,75 0,150 130,75 130,-75" fill="#2c1245dd" stroke="url(#n)" stroke-width="14" stroke-linejoin="round" filter="url(#g)"/>
+    <ellipse cx="0" cy="128" rx="86" ry="11" fill="#000" opacity=".5"/>
+    <path d="M-62 124 L62 124 L46 78 L-46 78 Z" fill="url(#m)" stroke="#c3cbf5" stroke-width="3"/>
+    <rect x="-72" y="60" width="144" height="20" rx="7" fill="#232c4d" stroke="#4a5480" stroke-width="3"/>
+    <rect x="-15" y="-6" width="30" height="70" fill="url(#m)" stroke="#9aa5d6" stroke-width="2"/>
+    <circle cx="0" cy="28" r="30" fill="url(#c)" opacity=".9"/>
+    <circle cx="0" cy="28" r="16" fill="#3f0b33" stroke="#ff7ad9" stroke-width="4"/>
+    <circle cx="0" cy="28" r="7" fill="#ffe2f6"/>
+    <rect x="-44" y="-44" width="88" height="34" rx="12" fill="url(#m)" stroke="#c3cbf5" stroke-width="3"/>
+    <g transform="rotate(-26 40 -28)">
+      <rect x="38" y="-38" width="72" height="11" rx="5" fill="#1b2038" stroke="#c3cbf5" stroke-width="2"/>
+      <rect x="38" y="-24" width="60" height="9" rx="4" fill="#1b2038" stroke="#c3cbf5" stroke-width="2"/>
+      <circle cx="112" cy="-32" r="5" fill="#ff7ad9" filter="url(#g)"/>
+    </g>
+    <line x1="-24" y1="-44" x2="-36" y2="-76" stroke="#c3cbf5" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="-36" cy="-80" r="6" fill="#ff5d7e" filter="url(#g)"/>
+    <polyline points="-96,52 -108,26 -92,12 -102,-12" fill="none" stroke="#ffb3ec" stroke-width="4" stroke-linecap="round" filter="url(#g)"/>
+    <polyline points="96,52 108,26 92,12 102,-12" fill="none" stroke="#ffb3ec" stroke-width="4" stroke-linecap="round" filter="url(#g)"/>
+  </g>
+</svg>
