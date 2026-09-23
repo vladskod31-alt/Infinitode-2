@@ -264,6 +264,7 @@
     },
     onGameOver(d) {
       const S = globalThis.STORE;
+      const sessTroph = this.game ? (this.game.trophies || 0) : 0;
       this.bankTrophies();
       const xp = Math.round(d.score / 25 + d.wave * 5 + (d.win ? 150 : 0));
       S.addXP(xp);
@@ -288,8 +289,10 @@
       d.win ? globalThis.AUDIO.SFX.victory() : globalThis.AUDIO.SFX.defeat();
       globalThis.AUDIO.playMusic('menu');
       const mm = Math.floor(d.time / 60), ss = Math.floor(d.time % 60);
+      const bstars = [0, 1, 2].map(i => `<span class="${i < stars ? 'on' : 'off'}" style="animation-delay:${0.3 + i * 0.35}s">★</span>`).join('');
       this.openModal(`
-        <h2 class="${d.win ? 'win' : 'lose'}">${d.win ? T('victory') + ' ' + '★'.repeat(stars) : T('defeat')}</h2>
+        <h2 class="${d.win ? 'win bounce' : 'lose'}">${d.win ? T('victory') : T('defeat')}</h2>
+        ${d.win ? `<div class="bstars">${bstars}</div>` : ''}
         <div class="stats-grid">
           <div><span>${T('waveReached')}</span><b>${d.wave}</b></div>
           <div><span>${T('score')}</span><b>${d.score}</b></div>
@@ -298,13 +301,16 @@
           <div><span>${T('time')}</span><b>${mm}:${String(ss).padStart(2, '0')}</b></div>
           <div><span>${T('xpGain')}</span><b>+${xp} XP</b></div>
         </div>
+        <div class="vrewards">+${xp} XP • +${sessTroph} 🏆${d.rp ? ` • +${d.rp} 🔬` : ''}</div>
         <div class="modal-btns">
           ${d.win && !this.game.endless ? `<button class="btn gold" id="m-endless">${T('continueEndless')}</button>` : ''}
           <button class="btn primary" id="m-retry">${T('gameAgain')}</button>
           <button class="btn ghost" id="m-menu">${T('toMenu')}</button>
+          <button class="btn ghost" id="m-settings" title="${T('settings')}">⚙</button>
         </div>`);
       $('m-retry').onclick = () => { globalThis.AUDIO.SFX.click(); this.startGame(this.mapId); };
       $('m-menu').onclick = () => { globalThis.AUDIO.SFX.click(); this.closeModal(); this.renderMenuProfile(); this.show('scr-menu'); };
+      $('m-settings').onclick = () => { globalThis.AUDIO.SFX.click(); this.closeModal(); this.renderSettings(); this.show('scr-settings'); };
       const me = $('m-endless');
       if (me) me.onclick = () => { globalThis.AUDIO.SFX.click(); this.closeModal(); this.game.endless = true; this.game.over = false; this.game.paused = false; };
     },

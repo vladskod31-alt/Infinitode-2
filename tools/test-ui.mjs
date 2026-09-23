@@ -113,6 +113,14 @@ g.endless = false; g.wave = 30; g.waveActive = false; g.enemies = []; g.spawnQue
 g.waveBonus = 150; g.clearWave();
 ok(g.over && g.won, 'victory triggers at wave 30');
 ok(window.document.getElementById('m-retry') !== null, 'gameover modal buttons exist');
+if (V5) {
+  ok(window.document.querySelectorAll('.bstars span').length === 3, 'victory stars row rendered');
+  window.document.getElementById('m-settings').click();
+  ok(!window.document.getElementById('scr-settings').classList.contains('hidden'), 'settings opens from victory');
+  window.document.getElementById('btn-set-back').click();
+  UI.onGameOver({ score: 100, wave: 30, kills: 50, earned: 200, time: 60, rp: 0, win: true });
+  ok(window.document.getElementById('m-endless') !== null, 'victory modal restored');
+}
 // continue endless
 window.document.getElementById('m-endless').click();
 ok(!g.over && g.endless, 'continue endless works');
