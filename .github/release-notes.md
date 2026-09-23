@@ -31,6 +31,12 @@ A brand-new tower defense in the spirit of Infinitode 2: **16 turret types, atta
 
 HTML5 Canvas + WebView • JavaScript engine з модульними тестами • Signed release APK (стабільний підпис — оновлення ставляться поверх).
 
-## 📋 Зміни / Changelog (v1.0.0)
+## 📋 Зміни / Changelog
 
+### v2.0.0 — нова музика 🎵
+- Справжній саундтрек **Kevin MacLeod** (CC-BY 4.0): Heroic Age (меню), Volatile Reaction + Interloper (бій), Unholy Knight (бос) / Real soundtrack by Kevin MacLeod
+- Розділ авторства музики в Допомозі / Music credits in Help
+- APK все ще легкий (~14 МБ) / Still lightweight (~14 MB)
+
+### v1.0.0
 - Перший публічний реліз / First public release 🎉

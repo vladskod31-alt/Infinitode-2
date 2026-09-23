@@ -1,4 +1,4 @@
-/* WebAudio SFX synth + music player (WAV tracks) */
+/* WebAudio SFX synth + music player (OGG tracks by Kevin MacLeod, CC-BY 4.0 — see assets/music/CREDITS.md) */
 (function () {
   'use strict';
   let ctx = null, master = null, musicGain = null, sfxGain = null;
@@ -94,7 +94,7 @@
     curTrack = track;
     try {
       if (!musicEl) { musicEl = new Audio(); musicEl.loop = true; musicEl.preload = 'auto'; }
-      musicEl.src = 'assets/music/' + track + '.wav';
+      musicEl.src = 'assets/music/' + track + '.ogg';
       applyVolumes();
       const p = musicEl.play();
       if (p && p.catch) p.catch(() => {});

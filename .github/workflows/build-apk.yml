@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 env:
-  VERSION_NAME: '1.0.0'
+  VERSION_NAME: '2.0.0'
 
 jobs:
   test:

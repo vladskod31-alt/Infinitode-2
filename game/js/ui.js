@@ -16,7 +16,8 @@
       nickname: "Ім'я командира", avatar: 'Аватар', save: 'Зберегти', saved: 'Збережено!', rank: 'Звання',
       games: 'Ігор', wins: 'Перемог', bestWave: 'Найкраща хвиля', bosses: 'Босів', strikes: 'Ударів з неба', mapsWon: 'Мап пройдено',
       researchPts: 'Очки науки', buy: 'Купити', maxed: 'МАКС', locked: 'Закрито', unlocked: 'Відкрито',
-      howto: 'Як грати', towers: 'Турелі', enemiesInfo: 'Вороги',
+      howto: 'Як грати', towers: 'Турелі', enemiesInfo: 'Вороги', musicTitle: 'Музика',
+      musicText: 'Фонова музика: Kevin MacLeod (incompetech.com), ліцензія CC-BY 4.0. Треки: «Heroic Age» (меню), «Volatile Reaction» і «Interloper» (бій), «Unholy Knight» (бос). Звукові ефекти синтезовані в коді.',
       howtoText: 'Будуй турелі на вільних клітинках, щоб зупинити хвилі ворогів. Вороги йдуть від порталу до бази. Не дай їм прорватись! Турелі отримують досвід і нові здібності на 4, 7 і 10 рівнях. Літаючих (вертоліти, винищувачі) б’ють не всі турелі — будуй ППО, теслу, ракети або ангару. Кожні 10 хвиль — бос!',
       prio: 'Ціль', first: 'Перший', last: 'Останній', strong: 'Сильний', weak: 'Слабкий', fast: 'Швидкий', close: 'Близький',
       groundOnly: 'Тільки земля', airOnly: 'Тільки повітря', both: 'Земля + повітря',
@@ -38,7 +39,8 @@
       nickname: 'Commander name', avatar: 'Avatar', save: 'Save', saved: 'Saved!', rank: 'Rank',
       games: 'Games', wins: 'Wins', bestWave: 'Best wave', bosses: 'Bosses', strikes: 'Heli strikes', mapsWon: 'Maps beaten',
       researchPts: 'Science points', buy: 'Buy', maxed: 'MAX', locked: 'Locked', unlocked: 'Unlocked',
-      howto: 'How to play', towers: 'Turrets', enemiesInfo: 'Enemies',
+      howto: 'How to play', towers: 'Turrets', enemiesInfo: 'Enemies', musicTitle: 'Music',
+      musicText: 'Background music by Kevin MacLeod (incompetech.com), CC-BY 4.0 license. Tracks: "Heroic Age" (menu), "Volatile Reaction" and "Interloper" (battle), "Unholy Knight" (boss). Sound effects are synthesized in code.',
       howtoText: 'Build turrets on free tiles to stop enemy waves. Enemies walk from the portal to your base. Do not let them through! Turrets gain XP and new abilities at levels 4, 7 and 10. Flying enemies (helis, jets) can only be hit by some turrets — build Antiair, Tesla, Missiles or a Heli Hangar. Boss every 10 waves!',
       prio: 'Target', first: 'First', last: 'Last', strong: 'Strong', weak: 'Weak', fast: 'Fast', close: 'Close',
       groundOnly: 'Ground only', airOnly: 'Air only', both: 'Ground + air',
@@ -531,6 +533,7 @@
     },
     renderHelp() {
       $('help-text').textContent = STR[globalThis.STORE.S.settings.lang].howtoText;
+      $('help-music').textContent = T('musicText');
       const tw = $('help-towers');
       tw.innerHTML = '';
       for (const [key, def] of Object.entries(globalThis.BAL.TOWERS).sort((a, b) => a[1].order - b[1].order)) {
