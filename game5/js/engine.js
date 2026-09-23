@@ -47,6 +47,8 @@
       this.shake = 0;
       this.started = false;
       this.rpEarned = 0;
+      this.upg = opts.upg || {};
+      this.trophies = 0;
       this.quests = this.BAL.pickQuests();
       this.builtTotal = 0; this.towerKills = {}; this.minerEarned = 0;
       this.crystalsEarned = 0; this.questsDone = 0; this.bossTypes = new Set();
@@ -157,7 +159,7 @@
     }
 
     // ---------- effective stats ----------
-    tDmg(tw) { return tw.def.dmg * (1 + 0.18 * (tw.level - 1)) * tw.m.dmgMul * this.RFX.dmgMul; }
+    tDmg(tw) { return tw.def.dmg * (1 + 0.18 * (tw.level - 1)) * tw.m.dmgMul * this.RFX.dmgMul * (this.upg[tw.type] || 1); }
     tRate(tw) { let r = tw.def.rate * (1 + 0.04 * (tw.level - 1)) * tw.m.rateMul * this.RFX.rateMul; if (tw.chilled) r *= 0.7; return r; }
     tRange(tw) { return tw.def.range * TILE * tw.m.rangeMul * this.RFX.rangeMul; }
     tPs(tw) { return (tw.def.ps || 500) * tw.m.psMul; }
@@ -276,6 +278,7 @@
     killEnemy(e, tw) {
       e.hp = 0;
       this.kills++;
+      this.trophies++;
       let rw = Math.round(e.d.reward * this.BAL.rewardMul(this.wave) * this.diff.rw * (this.RFX.coinMul || 1) * (tw && tw.m.bounty ? 1 + tw.m.bounty : 1));
       this.coins += rw; this.earned += rw;
       this.score += 10 + (e.d.boss ? 1000 : 0);
@@ -336,7 +339,7 @@
           const period = 5 * (tw.m.tickMul || 1);
           if (tw.tick >= period) {
             tw.tick -= period;
-            const gain = Math.round(def.income * (1 + 0.25 * (tw.level - 1)) * (tw.m.incMul || 1) * (this.RFX.minerMul || 1) * (this.RFX.coinMul || 1));
+            const gain = Math.round(def.income * (1 + 0.25 * (tw.level - 1)) * (tw.m.incMul || 1) * (this.RFX.minerMul || 1) * (this.RFX.coinMul || 1) * (this.upg.miner || 1));
             this.coins += gain; this.earned += gain; this.minerEarned += gain;
             this.floater(tw.x, tw.y - 34, '+' + gain, '#5ef2b8');
             if (this.crystalSet.has(tw.gx + ',' + tw.gy)) {
@@ -352,7 +355,7 @@
         }
         case 'freezing': {
           const range = this.tRange(tw);
-          const slow = Math.min(0.85, def.slow + (tw.m.slowPlus || 0));
+          const slow = Math.min(0.9, (def.slow + (tw.m.slowPlus || 0)) * (this.upg.freezing || 1));
           let n = 0;
           for (const e of this.enemies) {
             if (!this.inRange(tw, e, range)) continue;

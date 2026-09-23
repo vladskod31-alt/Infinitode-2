@@ -97,12 +97,13 @@
     <div class="menu-grid">
       <button class="btn primary big" id="btn-play">▶ <span data-i18n="play">ГРАТИ</span></button>
       <button class="btn ghost" id="btn-research">🔬 <span data-i18n="research">Дослідження</span></button>
+      <button class="btn ghost" id="btn-upg">⬆ <span data-i18n="upgrades">Прокачка</span></button>
       <button class="btn ghost" id="btn-profile">👤 <span data-i18n="profile">Профіль</span></button>
       <button class="btn ghost" id="btn-settings">⚙ <span data-i18n="settings">Налаштування</span></button>
       <button class="btn ghost" id="btn-help">❓ <span data-i18n="help">Допомога</span></button>
     </div>
     <div class="menu-best" id="menu-best"></div>
-    <div class="menu-foot">v1.0.0 • <span data-i18n="offline">офлайн • без реклами</span> • ♪ Kevin MacLeod</div>
+    <div class="menu-foot">v1.1.0-preview • <span data-i18n="offline">офлайн • без реклами</span> • ♪ Kevin MacLeod</div>
   </div>
 </div>
 
@@ -124,6 +125,7 @@
     <span class="chip red"><svg class="ic"><use href="#i-heart"/></svg><span id="hud-lives">20</span></span>
     <span class="chip blue">🌊 <span id="hud-wave">0</span></span>
     <span class="chip green">★ <span id="hud-score">0</span></span>
+    <span class="chip trophy">🏆 <span id="hud-trophies">0</span></span>
     <span class="hud-sp"></span>
     <button class="hbtn" id="btn-speed"><svg class="ic"><use href="#i-speed"/></svg><span>1x</span></button>
     <button class="hbtn" id="btn-pause"><svg class="ic"><use href="#i-pause"/></svg></button>
@@ -161,6 +163,16 @@
   </div>
 </div>
 
+<!-- ================= UPGRADES ================= -->
+<div class="screen hidden" id="scr-upg">
+  <div class="narrow">
+    <h1 class="ttl" data-i18n="upgrades">Прокачка</h1>
+    <div id="upg-head"></div>
+    <div id="upg-list"></div>
+    <button class="btn ghost" id="btn-upg-back" style="width:100%"><span data-i18n="back">← Назад</span></button>
+  </div>
+</div>
+
 <!-- ================= PROFILE ================= -->
 <div class="screen hidden" id="scr-profile">
   <div class="narrow">
@@ -179,6 +191,8 @@
           <span class="dim" id="pf-xptext">0 XP</span>
         </div>
       </div>
+      <div class="set-row"><label data-i18n="gradName">✨ Градієнтне імʼя</label><span class="switch"><input type="checkbox" id="pf-grad"><i></i></span></div>
+      <div class="dim" id="pf-grad-hint" style="margin:-4px 0 8px"></div>
       <h3 class="sec" data-i18n="avatar">Аватар</h3>
       <div id="av-grid"></div>
       <div id="pf-stats"></div>

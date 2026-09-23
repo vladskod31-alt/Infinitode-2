@@ -8,7 +8,7 @@ A **brand-new separate game** in the spirit of Infinitode 2 — installs ALONGSI
 
 ## 📥 Встановлення / Install
 
-1. Завантаж **Infinitode5-v1.0.0-release.apk** нижче / Download the APK below.
+1. Завантаж **Infinitode5-vX.Y.Z-release.apk** нижче / Download the APK below.
 2. Відкрий файл на телефоні і дозволь встановлення з невідомих джерел / Open it and allow installs from unknown sources.
 3. Грай! Потрібен Android 7.0+ / Play! Requires Android 7.0+.
 
@@ -34,6 +34,13 @@ A **brand-new separate game** in the spirit of Infinitode 2 — installs ALONGSI
 HTML5 Canvas + WebView • JavaScript engine з модульними тестами • Signed release APK • Окремий пакет `com.infinitode5.game` — свій підпис і свої збереження.
 
 ## 📋 Зміни / Changelog
+
+### 1.1.0-preview 👀
+- 🏆 **Кубки**: +1 за кожне вбивство, банк кубків, **ПРАЙМ** за 1000!
+- 🌈 Колір веж змінюється з кожним кубком / Tower colors shift with every trophy
+- ✨ **Градієнтне імʼя** командира для праймів (перемикається в профілі)
+- ⬆ **Прокачка веж**: постійні +4% шкоди/рівень за кубки (10 рівнів на турель)
+- 🏆 Нове досягнення «Прайм» / New achievement
 
 ### 1.0.0
 - Перший публічний реліз / First public release 🎉

@@ -377,6 +377,7 @@
     { id: 'allboss', xp: 200, rp: 4, name: { uk: 'Вбивця титанів', en: 'Titan slayer' }, desc: { uk: 'Знищ усіх 4 босів', en: 'Destroy all 4 bosses' } },
     { id: 'stars18', xp: 250, rp: 5, name: { uk: 'Колекціонер зірок', en: 'Star collector' }, desc: { uk: 'Збери 18 зірок', en: 'Collect 18 stars' } },
     { id: 'prestige1', xp: 100, rp: 0, name: { uk: 'Переродження', en: 'Rebirth' }, desc: { uk: 'Візьми 1 рівень престижу', en: 'Gain 1 prestige level' } },
+    { id: 'prime', xp: 300, rp: 5, name: { uk: 'Прайм', en: 'Prime' }, desc: { uk: 'Збери 1000 кубків', en: 'Collect 1000 trophies' } },
     { id: 'endless35', xp: 200, rp: 4, name: { uk: 'Нескінченність', en: 'Infinity' }, desc: { uk: 'Дійди до 35-ї хвилі', en: 'Reach wave 35' } },
   ];
 
@@ -412,9 +413,46 @@
     return pool.slice(0, 3).map(def => ({ def, prog: 0, done: false }));
   }
 
+  // permanent per-tower upgrades (bought with trophies): +4% output per level, max 10
+  const UPG_MAX = 10, UPG_PCT = 4;
+  function upgCost(lv) { return 10 * (lv + 1); }
+  // hue-shift a #rrggbb color by deg (tower colors evolve with trophies)
+  const _shiftCache = new Map();
+  function shiftColor(hex, deg) {
+    if (!hex || hex[0] !== '#') return hex;
+    deg = ((Math.round(deg * 10) / 10) % 360 + 360) % 360;
+    if (deg === 0) return hex;
+    const key = hex + '|' + deg;
+    const hit = _shiftCache.get(key);
+    if (hit) return hit;
+    const r = parseInt(hex.slice(1, 3), 16) / 255, g = parseInt(hex.slice(3, 5), 16) / 255, b = parseInt(hex.slice(5, 7), 16) / 255;
+    const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+    let h = 0, st = 0; const l = (mx + mn) / 2;
+    if (mx !== mn) {
+      const d = mx - mn;
+      st = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
+      if (mx === r) h = ((g - b) / d + (g < b ? 6 : 0));
+      else if (mx === g) h = (b - r) / d + 2;
+      else h = (r - g) / d + 4;
+      h *= 60;
+    }
+    const hue2 = (p, q, t) => { if (t < 0) t += 1; if (t > 1) t -= 1; if (t < 1 / 6) return p + (q - p) * 6 * t; if (t < 1 / 2) return q; if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6; return p; };
+    let R, G, B;
+    if (st === 0) { R = G = B = l; } else {
+      const q = l < 0.5 ? l * (1 + st) : l + st - l * st, p = 2 * l - q, hk = (((h + deg) % 360) + 360) % 360 / 360;
+      R = hue2(p, q, hk + 1 / 3); G = hue2(p, q, hk); B = hue2(p, q, hk - 1 / 3);
+    }
+    const to = (x) => Math.round(x * 255).toString(16).padStart(2, '0');
+    const out = '#' + to(R) + to(G) + to(B);
+    if (_shiftCache.size > 2000) _shiftCache.clear();
+    _shiftCache.set(key, out);
+    return out;
+  }
+
   const api = { TILE, COLS, ROWS, W, H, TOWERS, ABILITIES, ENEMIES, MAPS, RESEARCH, ACH, PRIORITIES,
     hpMul, spdMul, rewardMul, genWave, buildPath, posAt, xpNeed, upCost, researchFx,
-    MODIFIERS, GENERIC_AB, ULTIMA, QUESTS, pickQuests, bossFor };
+    MODIFIERS, GENERIC_AB, ULTIMA, QUESTS, pickQuests, bossFor,
+    UPG_MAX, UPG_PCT, upgCost, shiftColor };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else globalThis.BAL = api;
 })();

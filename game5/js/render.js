@@ -42,6 +42,8 @@
     render(dt) {
       this.t += dt;
       const c = this.ctx, g = this.game;
+      const st = globalThis.STORE ? globalThis.STORE.S.stats.trophies || 0 : 0;
+      this.tShift = ((st + (g.trophies || 0)) % 100) * 3.6;
       c.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
       c.fillStyle = '#05070f';
       c.fillRect(0, 0, this.cw, this.ch);
@@ -193,6 +195,7 @@
     // ---------- towers ----------
     drawTower(c, g, tw) {
       const d = tw.def;
+      const dc = (g.BAL.shiftColor && this.tShift) ? g.BAL.shiftColor(d.color, this.tShift) : d.color;
       c.save();
       c.translate(tw.x, tw.y);
       // shadow + platform
@@ -211,7 +214,7 @@
       this.drawHead(c, g, tw);
 
       // level pips
-      c.fillStyle = tw.level >= 10 ? '#ffe27a' : d.color;
+      c.fillStyle = tw.level >= 10 ? '#ffe27a' : dc;
       for (let i = 0; i < Math.min(10, tw.level); i++) {
         const a = (i / 10) * 6.283 - 1.57;
         c.beginPath(); c.arc(Math.cos(a) * 30, Math.sin(a) * 30, tw.level >= 10 ? 3.4 : 2.4, 0, 6.29); c.fill();
@@ -239,14 +242,14 @@
       // crusher claws
       if (tw.type === 'crusher') {
         for (const gr of tw.grabs) {
-          c.strokeStyle = d.color; c.lineWidth = 4;
+          c.strokeStyle = dc; c.lineWidth = 4;
           c.beginPath(); c.moveTo(tw.x, tw.y); c.lineTo(gr.e.x, gr.e.y); c.stroke();
           c.fillStyle = '#ff5d7e';
           c.beginPath(); c.arc(gr.e.x, gr.e.y, 6, 0, 6.29); c.fill();
         }
       }
       // drones
-      if (tw.type === 'heli') for (const dr of tw.drones) this.drawDrone(c, dr, d.color);
+      if (tw.type === 'heli') for (const dr of tw.drones) this.drawDrone(c, dr, dc);
       // charging glow (laser/gauss)
       if (tw.type === 'laser' && tw.charge > 0) {
         const need = d.charge * (tw.m.chargeMul || 1);
@@ -258,10 +261,11 @@
 
     drawHead(c, g, tw) {
       const d = tw.def;
+      const dc = (g.BAL.shiftColor && this.tShift) ? g.BAL.shiftColor(d.color, this.tShift) : d.color;
       c.save();
       const rotKinds = ['basic', 'cannon', 'multishot', 'sniper', 'minigun', 'venom', 'missile', 'flame', 'laser', 'gauss', 'antiair', 'plasma'];
       if (rotKinds.includes(tw.type)) c.rotate(tw.angle);
-      c.fillStyle = d.color; c.strokeStyle = '#0b1026'; c.lineWidth = 2;
+      c.fillStyle = dc; c.strokeStyle = '#0b1026'; c.lineWidth = 2;
       const barrel = (len, w, off) => { c.fillRect(off || 6, -w / 2, len, w); };
       switch (tw.type) {
         case 'basic':
@@ -270,7 +274,7 @@
           break;
         case 'cannon':
           barrel(20, 18); c.fillStyle = '#3a2c1c'; c.fillRect(24, -11, 6, 22);
-          c.beginPath(); c.arc(0, 0, 16, 0, 6.29); c.fillStyle = d.color; c.fill(); c.stroke();
+          c.beginPath(); c.arc(0, 0, 16, 0, 6.29); c.fillStyle = dc; c.fill(); c.stroke();
           break;
         case 'multishot': {
           const n = d.count + (tw.m.countPlus || 0);
@@ -281,12 +285,12 @@
         case 'sniper':
           c.fillRect(4, -3, 40, 6);
           c.fillStyle = '#0b1026'; c.fillRect(38, -5, 6, 10);
-          c.beginPath(); c.arc(0, 0, 13, 0, 6.29); c.fillStyle = d.color; c.fill(); c.stroke();
+          c.beginPath(); c.arc(0, 0, 13, 0, 6.29); c.fillStyle = dc; c.fill(); c.stroke();
           c.fillStyle = '#fff'; c.beginPath(); c.arc(-4, -4, 3, 0, 6.29); c.fill();
           break;
         case 'freezing':
           c.rotate(this.t * 1.2);
-          c.fillStyle = d.color;
+          c.fillStyle = dc;
           c.beginPath(); c.moveTo(0, -18); c.lineTo(12, 0); c.lineTo(0, 18); c.lineTo(-12, 0); c.closePath(); c.fill(); c.stroke();
           c.fillStyle = '#fff'; c.beginPath(); c.arc(0, 0, 4, 0, 6.29); c.fill();
           c.strokeStyle = 'rgba(159,232,255,.25)'; c.lineWidth = 2;
@@ -304,7 +308,7 @@
           c.fillStyle = '#7a4d1c'; c.beginPath(); c.arc(0, 0, 5, 0, 6.29); c.fill();
           break;
         case 'blast':
-          c.fillStyle = d.color;
+          c.fillStyle = dc;
           c.beginPath(); c.arc(0, 0, 13 + Math.sin(this.t * 5) * 2, 0, 6.29); c.fill(); c.stroke();
           c.fillStyle = '#fff'; c.beginPath(); c.arc(0, 0, 5, 0, 6.29); c.fill();
           break;
@@ -319,11 +323,11 @@
         case 'venom':
           c.fillStyle = '#1d3a1a'; c.beginPath(); c.arc(0, 0, 15, 0, 6.29); c.fill(); c.stroke();
           c.fillRect(4, -5, 22, 10);
-          c.fillStyle = d.color; c.beginPath(); c.arc(0, 0, 8 + Math.sin(this.t * 4) * 1.5, 0, 6.29); c.fill();
+          c.fillStyle = dc; c.beginPath(); c.arc(0, 0, 8 + Math.sin(this.t * 4) * 1.5, 0, 6.29); c.fill();
           break;
         case 'tesla':
           c.fillStyle = '#3a4670'; c.fillRect(-5, -6, 10, 24);
-          c.fillStyle = d.color; c.beginPath(); c.arc(0, -12, 9, 0, 6.29); c.fill(); c.stroke();
+          c.fillStyle = dc; c.beginPath(); c.arc(0, -12, 9, 0, 6.29); c.fill(); c.stroke();
           c.strokeStyle = '#7df9ff'; c.lineWidth = 2;
           for (let i = 0; i < 2; i++) {
             c.beginPath(); c.moveTo(0, -12);
@@ -333,23 +337,23 @@
           }
           break;
         case 'missile':
-          for (const o of [-8, 8]) { c.fillStyle = '#3a2c3a'; c.fillRect(-14, o - 5, 26, 10); c.fillStyle = d.color; c.fillRect(-14, o - 5, 26, 3); }
-          c.beginPath(); c.arc(-12, 0, 9, 0, 6.29); c.fillStyle = d.color; c.fill(); c.stroke();
+          for (const o of [-8, 8]) { c.fillStyle = '#3a2c3a'; c.fillRect(-14, o - 5, 26, 10); c.fillStyle = dc; c.fillRect(-14, o - 5, 26, 3); }
+          c.beginPath(); c.arc(-12, 0, 9, 0, 6.29); c.fillStyle = dc; c.fill(); c.stroke();
           break;
         case 'flame':
           c.fillRect(0, -7, 24, 14);
-          c.beginPath(); c.arc(0, 0, 13, 0, 6.29); c.fillStyle = d.color; c.fill(); c.stroke();
+          c.beginPath(); c.arc(0, 0, 13, 0, 6.29); c.fillStyle = dc; c.fill(); c.stroke();
           c.fillStyle = Math.random() < 0.5 ? '#ff6b4a' : '#ffe27a';
           c.beginPath(); c.moveTo(24, -5); c.lineTo(24 + 8 + Math.random() * 6, 0); c.lineTo(24, 5); c.closePath(); c.fill();
           break;
         case 'laser':
           c.fillRect(-6, -9, 26, 18);
           c.fillStyle = '#ff8fa3'; c.fillRect(18, -6, 6, 12);
-          c.beginPath(); c.arc(-6, 0, 12, 0, 6.29); c.fillStyle = d.color; c.fill(); c.stroke();
+          c.beginPath(); c.arc(-6, 0, 12, 0, 6.29); c.fillStyle = dc; c.fill(); c.stroke();
           break;
         case 'gauss':
           c.fillStyle = '#2c2440'; c.fillRect(-6, -10, 34, 6); c.fillRect(-6, 4, 34, 6);
-          c.fillStyle = d.color;
+          c.fillStyle = dc;
           for (const x of [0, 10, 20]) c.fillRect(x, -10, 4, 20);
           c.beginPath(); c.arc(-8, 0, 11, 0, 6.29); c.fill(); c.stroke();
           break;
@@ -367,7 +371,7 @@
         case 'crusher':
           c.fillStyle = '#3a4266'; c.beginPath(); c.arc(0, 0, 16, 0, 6.29); c.fill(); c.stroke();
           c.save(); c.rotate(tw.angle);
-          c.fillStyle = d.color;
+          c.fillStyle = dc;
           for (const a of [0, Math.PI]) { c.save(); c.rotate(a); c.fillRect(8, -5, 20, 10); c.beginPath(); c.arc(28, 0, 6, 0, 6.29); c.fill(); c.restore(); }
           c.restore();
           c.fillStyle = '#ff5d7e'; c.beginPath(); c.arc(0, 0, 6, 0, 6.29); c.fill();
@@ -375,14 +379,14 @@
         case 'heli':
           c.fillStyle = '#2c3448';
           c.beginPath(); c.arc(0, 0, 20, 0, 6.29); c.fill(); c.stroke();
-          c.fillStyle = d.color; c.font = 'bold 22px Arial'; c.textAlign = 'center'; c.textBaseline = 'middle';
+          c.fillStyle = dc; c.font = 'bold 22px Arial'; c.textAlign = 'center'; c.textBaseline = 'middle';
           c.fillText('H', 0, 1);
           break;
         case 'miner':
           c.fillStyle = '#123322';
           c.beginPath(); c.moveTo(0, -16); c.lineTo(14, 8); c.lineTo(-14, 8); c.closePath(); c.fill(); c.stroke();
           c.save(); c.rotate(this.t * 3);
-          c.fillStyle = d.color; c.fillRect(-3, -22, 6, 12);
+          c.fillStyle = dc; c.fillRect(-3, -22, 6, 12);
           c.restore();
           c.fillStyle = '#ffe27a'; c.beginPath(); c.arc(0, 2, 5, 0, 6.29); c.fill();
           break;

@@ -72,5 +72,23 @@ g.chooseAbility(pl, 0);
 ok(pl.abilities.includes('gdmg'), 'generic ability applied');
 g.setLevel(pl, 20);
 ok(pl.abilities.includes('ultima') && pl.level === 20, 'ULTIMA at 20, capped');
+// v1.1: permanent upgrades + trophies + color shift
+ok(BAL.upgCost(0) === 10 && BAL.upgCost(9) === 100 && BAL.UPG_MAX === 10 && BAL.UPG_PCT === 4, 'upg costs/caps');
+{
+  const gu = new Game('valley', { rfx: BAL.researchFx({}), upg: { tesla: 1.2, miner: 1.5 }, events: () => {} });
+  gu.paused = false;
+  const tw = gu.placeTower('tesla', 1, 1);
+  ok(approx(gu.tDmg(tw) / BAL.TOWERS.tesla.dmg, 1.2), 'upg multiplies tower damage');
+  gu.placeTower('miner', 1, 0);
+  for (let i = 0; i < 120; i++) gu.update(0.05);
+  ok(gu.minerEarned === Math.round(BAL.TOWERS.miner.income * 1.5), `upg multiplies miner income (${gu.minerEarned})`);
+  const k0 = gu.trophies;
+  const foe = gu.spawnEnemyAt('regular', 0);
+  gu.killEnemy(foe, null);
+  ok(gu.trophies === k0 + 1, 'each kill gives 1 trophy');
+}
+ok(BAL.shiftColor('#ff0000', 0) === '#ff0000', 'shiftColor identity at 0');
+ok(BAL.shiftColor('#ff0000', 120) === '#00ff00', 'shiftColor red+120=green');
+ok(BAL.shiftColor('#ff0000', 360) === '#ff0000', 'shiftColor full cycle');
 console.log(fails ? fails + ' FAILURES' : 'ALL V5 EDGE TESTS PASSED');
 process.exit(fails ? 1 : 0);

@@ -119,7 +119,7 @@ ok(!g.over && g.endless, 'continue endless works');
 // back to menu, profile/research/settings/help render
 window.document.getElementById('m-menu') && window.document.getElementById('m-menu').click();
 UI.renderProfile();
-ok(window.document.getElementById('pf-stats').children.length === (V5 ? 11 : 9), 'profile stats rendered');
+ok(window.document.getElementById('pf-stats').children.length === (V5 ? 12 : 9), 'profile stats rendered');
 ok(window.document.getElementById('pf-ach').children.length === window.BAL.ACH.length, 'achievements rendered');
 UI.renderResearch();
 ok(window.document.querySelectorAll('.res-row').length === window.BAL.RESEARCH.length, 'research rows rendered');
@@ -138,6 +138,19 @@ UI.renderResearch();
 const btn = window.document.querySelector('.res-row button');
 btn.click();
 ok((window.STORE.S.research.levels.dmg || 0) === 1, 'research purchase works');
+
+// upgrades + prime (v5)
+if (V5) {
+  UI.renderUpgrades();
+  ok(window.document.querySelectorAll('.upg-row').length === Object.keys(window.BAL.TOWERS).length, 'upgrade rows rendered');
+  window.STORE.S.stats.trophyBank = 100;
+  UI.renderUpgrades();
+  window.document.querySelector('.upg-row button').click();
+  ok((window.STORE.S.upgrades.basic || 0) === 1, 'tower upgrade purchase works');
+  window.STORE.S.stats.prime = true; window.STORE.S.profile.gradName = true;
+  UI.renderMenuProfile();
+  ok(window.document.getElementById('menu-name').classList.contains('grad-name'), 'gradient prime name applies');
+}
 
 console.log(fails ? `\n${fails} FAILURES` : '\nALL UI TESTS PASSED');
 process.exit(fails ? 1 : 0);

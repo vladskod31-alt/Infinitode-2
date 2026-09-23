@@ -6,9 +6,10 @@
 
   function defaults() {
     return {
-      profile: { name: 'Commander', avatar: 'i-av1', xp: 0 },
-      stats: { games: 0, wins: 0, bestWave: 0, bestScore: 0, kills: 0, bosses: 0, earned: 0, strikes: 0, mapsWon: [], stars: {}, timePlayed: 0 },
+      profile: { name: 'Commander', avatar: 'i-av1', xp: 0, gradName: false },
+      stats: { games: 0, wins: 0, bestWave: 0, bestScore: 0, kills: 0, bosses: 0, earned: 0, strikes: 0, mapsWon: [], stars: {}, trophies: 0, trophyBank: 0, prime: false, timePlayed: 0 },
       research: { points: 0, crystals: 0, prestige: 0, levels: {} },
+      upgrades: {},
       ach: {},
       settings: { music: 0.7, sfx: 0.8, speed: 1, autowave: false, lang: 'uk', shake: true },
     };

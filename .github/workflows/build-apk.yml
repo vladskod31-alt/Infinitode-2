@@ -11,7 +11,7 @@ permissions:
 
 env:
   VERSION_NAME: '2.0.0'
-  VERSION5_NAME: '1.0.0'
+  VERSION5_NAME: '1.1.0-preview'
 
 jobs:
   test:
@@ -176,6 +176,6 @@ jobs:
           else
             echo "Creating release $TAG"
             gh release create "$TAG" dist5/*.apk \
-              --title "🚁 INFINITODE 5 v${VERSION5_NAME}" \
-              --notes-file .github/release-notes-5.md
+              --title "🚁 INFINITODE 5 v${VERSION5_NAME} (PREVIEW)" \
+              --notes-file .github/release-notes-5.md --prerelease
           fi

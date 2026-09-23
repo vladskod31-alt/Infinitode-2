@@ -28,6 +28,10 @@
       quests: 'Квести', questDone: 'Квест виконано!', difficulty: 'Складність', crystals: 'Кристали',
       prestige: 'Престиж', prestigeBtn: 'Престиж • 25🔬', prestigeDone: 'Новий рівень престижу! 👑',
       prestigeFx: '+2% шкоди, +3% монет за рівень', stars: 'Зірки',
+      upgrades: 'Прокачка', trophies: 'Кубки', bank: 'Банк', prime: 'ПРАЙМ',
+      primeToast: '🏆 ПРАЙМ! Градієнтне імʼя розблоковано!',
+      gradName: '✨ Градієнтне імʼя', gradLocked: '🔒 Збери 1000 🏆 для ПРАЙМу',
+      income: 'Дохід', slowFx: 'Сповільнення', towerColor: 'Колір веж змінюється з кожним кубком!',
     },
     en: { play: 'PLAY', research: 'Research', profile: 'Profile', achievements: 'Achievements', settings: 'Settings', help: 'Help',
       best: 'Best', wave: 'Wave', coins: 'Coins', lives: 'Lives', score: 'Score', enemies: 'Enemies',
@@ -54,6 +58,10 @@
       quests: 'Quests', questDone: 'Quest complete!', difficulty: 'Difficulty', crystals: 'Crystals',
       prestige: 'Prestige', prestigeBtn: 'Prestige • 25🔬', prestigeDone: 'New prestige level! 👑',
       prestigeFx: '+2% damage, +3% coins per level', stars: 'Stars',
+      upgrades: 'Upgrades', trophies: 'Trophies', bank: 'Bank', prime: 'PRIME',
+      primeToast: '🏆 PRIME! Gradient name unlocked!',
+      gradName: '✨ Gradient name', gradLocked: '🔒 Collect 1000 🏆 for PRIME',
+      income: 'Income', slowFx: 'Slow', towerColor: 'Tower colors shift with every trophy!',
     },
   };
   const T = (k) => { const l = (globalThis.STORE.S.settings.lang === 'en') ? 'en' : 'uk'; return (STR[l] && STR[l][k]) || STR.uk[k] || k; };
@@ -66,7 +74,7 @@
 
     init() {
       this.applyI18n();
-      this.bindMenu(); this.bindMaps(); this.bindGame(); this.bindProfile(); this.bindResearch(); this.bindSettings(); this.bindHelp();
+      this.bindMenu(); this.bindMaps(); this.bindGame(); this.bindProfile(); this.bindResearch(); this.bindUpg(); this.bindSettings(); this.bindHelp();
       this.renderMenuProfile();
       this.show('scr-menu');
       globalThis.AUDIO.playMusic('menu');
@@ -114,6 +122,7 @@
     bindMenu() {
       $('btn-play').onclick = () => { globalThis.AUDIO.SFX.click(); this.renderMaps(); this.show('scr-maps'); };
       $('btn-research').onclick = () => { globalThis.AUDIO.SFX.click(); this.renderResearch(); this.show('scr-research'); };
+      $('btn-upg').onclick = () => { globalThis.AUDIO.SFX.click(); this.renderUpgrades(); this.show('scr-upg'); };
       $('btn-profile').onclick = () => { globalThis.AUDIO.SFX.click(); this.renderProfile(); this.show('scr-profile'); };
       $('btn-settings').onclick = () => { globalThis.AUDIO.SFX.click(); this.renderSettings(); this.show('scr-settings'); };
       $('btn-help').onclick = () => { globalThis.AUDIO.SFX.click(); this.renderHelp(); this.show('scr-help'); };
@@ -122,8 +131,9 @@
       const S = globalThis.STORE, lv = S.level();
       $('menu-av').innerHTML = `<use href="#${S.S.profile.avatar}"/>`;
       $('menu-name').textContent = S.S.profile.name;
+      $('menu-name').classList.toggle('grad-name', !!(S.S.stats.prime && S.S.profile.gradName));
       $('menu-lvl').textContent = `LV ${lv} • ${S.levelTitle(lv, S.S.settings.lang)}`;
-      $('menu-best').textContent = `${T('best')}: ${S.S.stats.bestScore} • ${T('wave')} ${S.S.stats.bestWave}`;
+      $('menu-best').textContent = `${T('best')}: ${S.S.stats.bestScore} • ${T('wave')} ${S.S.stats.bestWave} • 🏆 ${S.S.stats.trophies || 0}`;
     },
 
     // ---------- maps ----------
@@ -198,8 +208,10 @@
       this.mapId = mapId;
       const SR = globalThis.STORE.S.research;
       const rfx = globalThis.BAL.researchFx(SR.levels, SR.prestige || 0);
+      const upg = {};
+      for (const [id, lv] of Object.entries(globalThis.STORE.S.upgrades || {})) upg[id] = 1 + (globalThis.BAL.UPG_PCT / 100) * lv;
       const diff = globalThis.BAL.MODIFIERS.find(x => x.id === this.diffId) || globalThis.BAL.MODIFIERS[0];
-      this.game = new globalThis.Game(mapId, { rfx, diff, endless: this.endlessMode, events: (t, d) => this.onEvent(t, d) });
+      this.game = new globalThis.Game(mapId, { rfx, diff, upg, endless: this.endlessMode, events: (t, d) => this.onEvent(t, d) });
       this.renderQuests();
       this.game.paused = true;
       this.renderer = new globalThis.Renderer($('cv'), this.game);
@@ -234,8 +246,25 @@
       else if (type === 'towersChanged') { this.refreshTowerPanel(); this.refreshBuildBar(); }
       else if (type === 'gameOver') { this.onGameOver(d); }
     },
+    bankTrophies() {
+      const S = globalThis.STORE, g = this.game;
+      const n = g ? (g.trophies || 0) : 0;
+      if (n > 0) {
+        S.S.stats.trophies = (S.S.stats.trophies || 0) + n;
+        S.S.stats.trophyBank = (S.S.stats.trophyBank || 0) + n;
+        g.trophies = 0;
+      }
+      if (!S.S.stats.prime && (S.S.stats.trophies || 0) >= 1000) {
+        S.S.stats.prime = true;
+        S.save();
+        const def = S.unlockAch('prime');
+        if (def && def.name) this.achPopup(def);
+        this.toast(T('primeToast'), 4000);
+      }
+    },
     onGameOver(d) {
       const S = globalThis.STORE;
+      this.bankTrophies();
       const xp = Math.round(d.score / 25 + d.wave * 5 + (d.win ? 150 : 0));
       S.addXP(xp);
       S.S.research.points += d.rp;
@@ -303,6 +332,12 @@
       }
       this.refreshBuildBar();
     },
+    towerColor(key) {
+      const def = globalThis.BAL.TOWERS[key];
+      const g = this.game;
+      const tot = (globalThis.STORE.S.stats.trophies || 0) + ((g && g.trophies) || 0);
+      return globalThis.BAL.shiftColor(def.color, (tot % 100) * 3.6);
+    },
     refreshBuildBar() {
       if (!this.game) return;
       document.querySelectorAll('.build-btn').forEach(b => {
@@ -310,6 +345,7 @@
         b.classList.toggle('active', this.renderer.placing === t);
         b.classList.toggle('poor', !this.game.canAfford(t));
         b.querySelector('.bc').textContent = this.game.towerCost(t);
+        b.style.setProperty('--tc', this.towerColor(t));
       });
     },
     cancelPlacing() { if (this.renderer) { this.renderer.placing = null; this.refreshBuildBar(); } },
@@ -349,11 +385,11 @@
       p.classList.remove('hidden');
       const g = this.game;
       $('tp-icon').innerHTML = `<use href="#i-${tw.type}"/>`;
-      $('tp-icon').style.color = tw.def.color;
+      $('tp-icon').style.color = this.towerColor(tw.type);
       $('tp-name').textContent = TN(tw.def.name);
       $('tp-lvl').textContent = `LV ${tw.level}`;
-      const dmg = tw.type === 'miner' ? `+${Math.round(tw.def.income * (1 + 0.25 * (tw.level - 1)) * (tw.m.incMul || 1))}/5c` :
-        tw.type === 'freezing' ? `-${Math.round(Math.min(0.85, tw.def.slow + (tw.m.slowPlus || 0)) * 100)}%` :
+      const dmg = tw.type === 'miner' ? `+${Math.round(tw.def.income * (1 + 0.25 * (tw.level - 1)) * (tw.m.incMul || 1) * (g.upg.miner || 1))}/5c` :
+        tw.type === 'freezing' ? `-${Math.round(Math.min(0.9, (tw.def.slow + (tw.m.slowPlus || 0)) * (g.upg.freezing || 1)) * 100)}%` :
         tw.type === 'flame' ? `${Math.round(g.tDmg(tw))}/c` : String(Math.round(g.tDmg(tw)));
       $('tp-stats').innerHTML =
         `<span>⚔ ${dmg}</span><span>⏱ ${g.tRate(tw).toFixed(1)}/c</span><span>◎ ${(g.tRange(tw) / 64).toFixed(1)}</span><span>✈ ${this.airLabel(tw.def)}</span>`;
@@ -379,6 +415,7 @@
       set('hud-lives', String(g.lives));
       set('hud-wave', g.waveActive ? `${g.wave} (${g.enemies.length + g.spawnQueue.length})` : `${g.wave} → ${g.wave + 1}`);
       set('hud-score', this.fmt(g.score + g.earned * 0.5));
+      set('hud-trophies', this.fmt((globalThis.STORE.S.stats.trophies || 0) + (g.trophies || 0)));
       // wave button
       const bw = $('btn-wave');
       if (g.waveActive) { bw.classList.add('hidden'); }
@@ -403,7 +440,7 @@
         C.st = 0; st.classList.remove('cd');
         st.innerHTML = `<svg class="ic"><use href="#i-heli"/></svg><span>${T('strikeReady')}</span>`;
       }
-      if (!g.waveActive) this.refreshBuildBarThrottled();
+      this.refreshBuildBarThrottled();
       this.refreshQuests();
     },
     renderQuests() {
@@ -450,8 +487,8 @@
           <button class="btn ghost" id="m-menu">${T('toMenu')}</button>
         </div>`);
       $('m-resume').onclick = () => { globalThis.AUDIO.SFX.click(); this.closeModal(); this.game.paused = false; };
-      $('m-restart').onclick = () => { globalThis.AUDIO.SFX.click(); this.startGame(this.mapId); };
-      $('m-menu').onclick = () => { globalThis.AUDIO.SFX.click(); this.closeModal(); globalThis.AUDIO.playMusic('menu'); this.renderMenuProfile(); this.show('scr-menu'); };
+      $('m-restart').onclick = () => { globalThis.AUDIO.SFX.click(); this.bankTrophies(); globalThis.STORE.save(); this.startGame(this.mapId); };
+      $('m-menu').onclick = () => { globalThis.AUDIO.SFX.click(); this.bankTrophies(); globalThis.STORE.save(); this.closeModal(); globalThis.AUDIO.playMusic('menu'); this.renderMenuProfile(); this.show('scr-menu'); };
     },
     openAbilityModal() {
       const q = this.game.abilityQueue[0];
@@ -489,11 +526,20 @@
       };
       $('tab-pf-profile').onclick = () => { globalThis.AUDIO.SFX.click(); $('pf-tab-profile').classList.remove('hidden'); $('pf-tab-ach').classList.add('hidden'); $('tab-pf-profile').classList.add('active'); $('tab-pf-ach').classList.remove('active'); };
       $('tab-pf-ach').onclick = () => { globalThis.AUDIO.SFX.click(); $('pf-tab-ach').classList.remove('hidden'); $('pf-tab-profile').classList.add('hidden'); $('tab-pf-ach').classList.add('active'); $('tab-pf-profile').classList.remove('active'); };
+      $('pf-grad').onchange = (e) => {
+        const S = globalThis.STORE;
+        if (!S.S.stats.prime) { e.target.checked = false; globalThis.AUDIO.SFX.error(); this.toast(T('gradLocked'), 2600); return; }
+        globalThis.AUDIO.SFX.click();
+        S.S.profile.gradName = e.target.checked; S.save(); this.renderProfile();
+      };
     },
     renderProfile() {
       const S = globalThis.STORE, lv = S.level();
       $('pf-av').innerHTML = `<use href="#${S.S.profile.avatar}"/>`;
       $('pf-name').value = S.S.profile.name;
+      $('pf-name').classList.toggle('grad-name', !!(S.S.stats.prime && S.S.profile.gradName));
+      $('pf-grad').checked = !!S.S.profile.gradName;
+      $('pf-grad-hint').textContent = S.S.stats.prime ? `🏆 ${S.S.stats.trophies || 0} • ${T('prime')} 👑` : `${T('gradLocked')} (${S.S.stats.trophies || 0}/1000)`;
       $('pf-level').textContent = `LV ${lv}`;
       $('pf-rank').textContent = S.levelTitle(lv, S.S.settings.lang);
       const base = Math.pow(lv - 1, 2) * 100, next = Math.pow(lv, 2) * 100;
@@ -505,6 +551,7 @@
         [T('score'), st.bestScore], [T('kills'), st.kills], [T('bosses'), st.bosses],
         [T('earned'), st.earned], [T('strikes'), st.strikes], [T('mapsWon'), st.mapsWon.length + '/6'],
         [T('stars'), Object.values(st.stars || {}).reduce((a, b) => a + b, 0) + '/18'], [T('prestige'), S.S.research.prestige || 0],
+        [T('trophies'), `🏆 ${st.trophies || 0}`],
       ].map(([k, v]) => `<div><span>${k}</span><b>${v}</b></div>`).join('');
       const ag = $('av-grid');
       ag.innerHTML = '';
@@ -563,6 +610,49 @@
           if (cur === 'cry') R.crystals -= cost; else R.points -= cost;
           R.levels[r.id] = lv + 1;
           S.save(); this.renderResearch();
+        };
+        list.appendChild(d);
+      }
+    },
+
+    // ---------- tower upgrades (trophies) ----------
+    bindUpg() {
+      $('btn-upg-back').onclick = () => { globalThis.AUDIO.SFX.click(); this.renderMenuProfile(); this.show('scr-menu'); };
+    },
+    upgEffect(key) {
+      if (key === 'miner') return T('income');
+      if (key === 'freezing') return T('slowFx');
+      return T('damage');
+    },
+    renderUpgrades() {
+      const S = globalThis.STORE, BAL = globalThis.BAL;
+      const life = S.S.stats.trophies || 0, bankBal = S.S.stats.trophyBank || 0;
+      const prime = !!S.S.stats.prime;
+      $('upg-head').innerHTML =
+        `<div>🏆 <b>${life}</b> ${T('trophies')} • ${T('bank')}: <b>${bankBal}</b> 🏆</div>` +
+        (prime ? `<div>👑 <b>${T('prime')}</b> • ${T('towerColor')}</div>`
+          : `<div class="dim">${T('prime')}: ${Math.min(1000, life)}/1000</div><div class="prime-bar"><i style="width:${Math.min(100, life / 10)}%"></i></div>`);
+      const list = $('upg-list');
+      list.innerHTML = '';
+      const order = Object.values(BAL.TOWERS).sort((a, b) => a.order - b.order);
+      for (const def of order) {
+        const key = Object.keys(BAL.TOWERS).find(k => BAL.TOWERS[k] === def);
+        const lv = (S.S.upgrades || {})[key] || 0;
+        const maxed = lv >= BAL.UPG_MAX;
+        const cost = maxed ? 0 : BAL.upgCost(lv);
+        const can = !maxed && bankBal >= cost;
+        const d = document.createElement('div');
+        d.className = 'upg-row';
+        d.innerHTML = `<svg class="ic big" style="color:${BAL.shiftColor(def.color, (life % 100) * 3.6)}"><use href="#i-${key}"/></svg>
+          <div class="upg-mid"><b>${TN(def.name)}</b><span>${this.upgEffect(key)} +${lv * BAL.UPG_PCT}%</span>
+          <div class="pips">${Array.from({ length: BAL.UPG_MAX }, (_, i) => `<i class="${i < lv ? 'on' : ''}"></i>`).join('')}</div></div>
+          <button class="btn small ${can ? 'primary' : 'ghost'}" ${can ? '' : 'disabled'}>${maxed ? T('maxed') : `${T('buy')} • ${cost}🏆`}</button>`;
+        if (can) d.querySelector('button').onclick = () => {
+          globalThis.AUDIO.SFX.upgrade();
+          S.S.stats.trophyBank -= cost;
+          S.S.upgrades = S.S.upgrades || {};
+          S.S.upgrades[key] = lv + 1;
+          S.save(); this.renderUpgrades();
         };
         list.appendChild(d);
       }
